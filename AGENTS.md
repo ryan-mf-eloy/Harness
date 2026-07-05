@@ -18,7 +18,8 @@ project, and no project is ever nested inside this repo.
 
 | What | Where |
 |---|---|
-| Cross-project rules, skills, subagents (deployed to `~/.claude/`) | `claude/` |
+| Provider-agnostic engineering principles (the actual rules content) | `principles/PRINCIPLES.md` |
+| Claude-Code-specific packaging: subagents, skills (deployed to `~/.claude/`) | `claude/` |
 | Memory + documentation (Obsidian vault) | `Vault/` |
 | Immutable business/domain source of truth | `RAG/` |
 | Secret labels + descriptions (never values) | `Secrets/manifest.yaml` |
@@ -28,12 +29,31 @@ project, and no project is ever nested inside this repo.
 | Index of real project repositories | `Codebase/REGISTRY.md` |
 | Templates for onboarding a new project | `templates/` |
 
+## Provider-agnostic by construction
+
+`principles/PRINCIPLES.md` is plain markdown with no tool-specific syntax —
+it is the single source of truth for engineering culture, and it reaches
+every tool without being duplicated:
+
+| Tool | How it gets the principles |
+|---|---|
+| Claude Code (any project) | `~/.claude/CLAUDE.md` is a symlink to `principles/PRINCIPLES.md`, loaded in every session regardless of project |
+| Codex CLI (any project) | `~/.codex/AGENTS.md` is a symlink to the same file — Codex reads this as its global instruction layer before any project-specific `AGENTS.md` |
+| Cursor (any project) | Cursor reads a project's own `AGENTS.md` as a fallback natively; this repo's `.cursorrules` and `.cursor/rules/agents.mdc` point at `AGENTS.md`/`principles/PRINCIPLES.md` explicitly for robustness |
+| A newly onboarded project (any tool) | `templates/AGENTS.md.template` stamps the full content of `principles/PRINCIPLES.md` directly into that project's own `AGENTS.md`, since Cursor/Codex only read whatever `AGENTS.md` exists at that project's own root — see `Scripts/shared/onboard-project.sh` |
+
+Only the packaging under `claude/` (subagents, skills, hooks, permissions)
+is genuinely Claude-Code-specific — there is no equivalent mechanism yet in
+Cursor or Codex CLI. The instructions inside each skill/subagent file are
+still plain markdown a human or another tool can read and follow manually;
+only the YAML-frontmatter invocation sugar is Claude-Code-only.
+
 ## Precedence
 
 1. Explicit instructions in the current conversation/request.
 2. The target project's own `AGENTS.md` / local rules, when working inside a
    specific project.
-3. This file and the shared rules under `claude/rules/`.
+3. This file and `principles/PRINCIPLES.md`.
 4. Vault notes and verified memory.
 5. Generated artifacts and long-form documentation.
 
@@ -53,13 +73,11 @@ touched, and say so explicitly rather than silently picking one.
 
 ## Engineering culture
 
-Every implementation task in every project follows the standing rules in
-`claude/rules/engineering-principles.md`, `claude/rules/surgical-changes.md`,
-and `claude/rules/architecture-culture.md` (deployed globally to
-`~/.claude/rules/`, so they apply regardless of which project you're in).
-Summary: understand before acting, prefer what already exists, keep diffs
-scoped and reversible, test always, re-validate against the original
-acceptance criteria before calling anything done.
+Every implementation task in every project follows `principles/PRINCIPLES.md`
+in full — see the table above for how each tool reaches it. Summary:
+understand before acting, prefer what already exists, keep diffs scoped and
+reversible, test always, re-validate against the original acceptance
+criteria before calling anything done.
 
 ## Session bootstrap (when working in a specific project)
 

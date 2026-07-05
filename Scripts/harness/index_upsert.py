@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Incremental single-file upsert, invoked as a PostToolUse hook.
 
-Wired in claude/settings.template.json against PostToolUse with matcher
+Wired in this repo's own .claude/settings.json against PostToolUse with matcher
 "Write|Edit|MultiEdit". Reads the hook JSON payload from stdin (the only
 input format the hook mechanism guarantees) rather than relying on
 shell-templated placeholders — deliberately more robust than assuming a
@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from _index_common import (
+    PRINCIPLES_DIR,
     RAG_DIR,
     ROOT,
     VAULT_DIR,
@@ -28,16 +29,13 @@ from _index_common import (
 
 
 def resolve_source(abs_path: Path) -> str | None:
-    try:
-        abs_path.relative_to(VAULT_DIR)
-        return "vault"
-    except ValueError:
-        pass
-    try:
-        abs_path.relative_to(RAG_DIR)
-        return "rag"
-    except ValueError:
-        return None
+    for directory, source in ((VAULT_DIR, "vault"), (RAG_DIR, "rag"), (PRINCIPLES_DIR, "principles")):
+        try:
+            abs_path.relative_to(directory)
+            return source
+        except ValueError:
+            continue
+    return None
 
 
 def upsert_one(abs_path: Path, source: str) -> None:

@@ -40,16 +40,32 @@
 <!-- project-specific non-negotiables: what never to touch, what always
      needs human review -->
 
-## Shared Harness Conventions
+## Engineering Principles
 
-This project inherits cross-project conventions automatically via
-`~/.claude/` (deployed from the Harness repo):
-- Engineering principles: `~/.claude/rules/engineering-principles.md`,
-  `~/.claude/rules/surgical-changes.md`, `~/.claude/rules/architecture-culture.md`
-- Specialist subagents: `~/.claude/agents/` (risk-analyst, pr-drafter,
-  data-analyst, log-analyst, docs-writer, task-triage, debugger)
-- Secrets-by-label convention: see the Harness repo's `Secrets/manifest.yaml`
-  and `Scripts/harness/secure/`
+<!-- HARNESS:PRINCIPLES:BEGIN
+     The block below is stamped in verbatim from the Harness repo's
+     principles/PRINCIPLES.md by Scripts/shared/onboard-project.sh. Every
+     tool reading THIS project's own AGENTS.md gets the full content
+     directly — Cursor and Codex CLI don't follow cross-directory imports,
+     so the content has to physically live here, not just be linked to.
+     If the Harness's canonical principles change, re-run the onboarding
+     script to refresh this block; don't hand-edit it here, edit the
+     source in the Harness repo instead. -->
+<!-- HARNESS:PRINCIPLES:END -->
 
-Project-specific rules in this file always take precedence over general
-Harness conventions when they conflict.
+## Task Manager & Specialist Agents
+
+- Task manager labels/statuses: not yet configured for this project — see
+  the Harness's `claude/skills/task-manager-culture/SKILL.md` for the
+  fill-in procedure once a tracker is chosen.
+- Claude Code users additionally get a roster of specialist subagents
+  (risk-analyst, pr-drafter, data-analyst, log-analyst, docs-writer,
+  task-triage, debugger) via `~/.claude/agents/` — this is Claude-Code-
+  specific packaging; the underlying procedures are plain markdown any
+  tool can be pointed at directly if needed (see the Harness's `claude/`
+  folder).
+- Secrets-by-label convention: never a raw value in this repo. See the
+  Harness's `Secrets/manifest.yaml` and `Scripts/harness/secure/`.
+
+Project-specific rules above always take precedence over the general
+principles when they conflict.

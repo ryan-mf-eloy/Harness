@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """PreToolUse hook (matcher: Bash): deny known-destructive command patterns
 regardless of what the model decides. This is deliberately redundant with
-the `permissions.deny` block in settings.template.json — both need to agree
+the `permissions.deny` block in ~/.claude/settings.json — both need to agree
 to let a destructive command through, which is the point (defense in depth,
 not a single point of failure if one list is ever edited carelessly).
 """
@@ -15,7 +15,12 @@ DESTRUCTIVE_PATTERNS = [
     (re.compile(r"git\s+reset\s+--hard"), "git reset --hard"),
     (re.compile(r"git\s+clean\s+-f"), "git clean -f"),
     (re.compile(r"git\s+branch\s+-D\b"), "force branch delete"),
-    (re.compile(r"rm\s+-rf\s+(/|~|\.\s*$|\*\s*$)"), "rm -rf on a root/home/wildcard path"),
+    # Matches only a BARE /, ~, ., or * as the argument (bounded by
+    # whitespace/end-of-string) -- NOT a prefix of a longer path. Without
+    # the boundary, this used to false-positive on every `rm -rf
+    # /some/real/path` (any absolute path starts with "/"), which blocked
+    # ordinary cleanup and not just root/home/cwd/wildcard deletion.
+    (re.compile(r"rm\s+-rf\s+(/|~|\.|\*)(\s|$)"), "rm -rf on a root/home/cwd/wildcard path"),
     (re.compile(r"--no-verify\b"), "--no-verify (skips hooks)"),
     (re.compile(r"--no-gpg-sign\b"), "--no-gpg-sign (skips commit signing)"),
 ]

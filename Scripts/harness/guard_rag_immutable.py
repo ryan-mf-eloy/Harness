@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """PreToolUse hook: deny Write/Edit/MultiEdit and destructive Bash under RAG/.
 
-Wired in claude/settings.template.json against the PreToolUse event with
+Wired in this repo's own .claude/settings.json against the PreToolUse event with
 matcher "Write|Edit|MultiEdit|Bash". Reads the hook JSON payload from stdin
 (the only input format the hook mechanism guarantees), never relies on
 shell-templated placeholders beyond CLAUDE_PROJECT_DIR.

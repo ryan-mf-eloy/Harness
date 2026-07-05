@@ -11,8 +11,10 @@ a roster of specialist subagents — all designed to be deployed once
 
 ```
 AGENTS.md            canonical, cross-tool instructions (start here)
-CLAUDE.md             thin Claude Code pointer to AGENTS.md
-claude/               agents/ skills/ rules/ — symlinked into ~/.claude/
+CLAUDE.md             thin Claude Code pointer: @AGENTS.md
+.cursorrules, .cursor/rules/agents.mdc   thin Cursor pointer: see AGENTS.md
+principles/           PRINCIPLES.md — the actual rules content, provider-agnostic
+claude/               agents/ skills/ — Claude-Code-specific packaging, symlinked into ~/.claude/
 Vault/                Obsidian vault: memory + documentation
 RAG/                  immutable business/domain source of truth
 Secrets/              label manifest only, never values
@@ -27,10 +29,18 @@ templates/            AGENTS.md / CLAUDE.md / PR templates for onboarding a new 
 
 ```bash
 mkdir -p ~/.claude
-ln -s "$PWD/claude/agents" ~/.claude/agents
-ln -s "$PWD/claude/skills" ~/.claude/skills
-ln -s "$PWD/claude/rules"  ~/.claude/rules
+ln -s "$PWD/claude/agents"          ~/.claude/agents
+ln -s "$PWD/claude/skills"          ~/.claude/skills
+ln -s "$PWD/principles/PRINCIPLES.md" ~/.claude/CLAUDE.md   # global reach for Claude Code
+ln -s "$PWD/principles/PRINCIPLES.md" ~/.codex/AGENTS.md    # global reach for Codex CLI
 python3 Scripts/harness/index_rebuild.py
 ```
 
-See `AGENTS.md` for the full operating contract.
+Cursor has no confirmed file-based *global* rules slot (only per-project
+`AGENTS.md`/`.cursor/rules/` and an in-app "User Rules" setting) — if you
+want Cursor to see these principles in every project, paste
+`principles/PRINCIPLES.md` into Cursor's Settings → Rules once, by hand.
+
+See `AGENTS.md` for the full operating contract, and its
+"Provider-agnostic by construction" section for exactly how each tool
+reaches these principles.

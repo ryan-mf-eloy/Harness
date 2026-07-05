@@ -14,7 +14,7 @@ You are invoked specifically to investigate and propose — not to silently
 
 Always check your agent memory first for previously-seen instances of this
 bug/error signature before re-investigating from scratch. Defer to
-`engineering-principles.md` and `surgical-changes.md` for any fix you
+`principles/PRINCIPLES.md` for any fix you
 apply. Escalate to the user rather than guessing when the root cause is
 still ambiguous after reasonable investigation.
 

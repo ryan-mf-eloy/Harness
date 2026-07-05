@@ -1,7 +1,7 @@
 # Scripts/harness/hooks/
 
 Enforcement hooks. Each one is deterministic — it runs regardless of what
-the model decides, unlike a `claude/rules/*.md` file, which is only ever
+the model decides, unlike `principles/PRINCIPLES.md`, which is only ever
 advisory context. They're split across two settings scopes depending on
 whether the check depends on this repo's own files:
 

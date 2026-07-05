@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Full rebuild of Index/harness.sqlite from Vault/ and RAG/.
+"""Full rebuild of Index/harness.sqlite from Vault/, RAG/, and principles/.
 
 Usage:
   index_rebuild.py            # drop and recreate the index from scratch
@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 
 from _index_common import (
     DB_PATH,
+    PRINCIPLES_DIR,
     RAG_DIR,
     ROOT,
     SCHEMA_SQL,
@@ -56,7 +57,11 @@ def rebuild() -> int:
     conn.executescript(SCHEMA_SQL)
 
     rows = []
-    sources = list(iter_source_files(VAULT_DIR, "vault")) + list(iter_source_files(RAG_DIR, "rag"))
+    sources = (
+        list(iter_source_files(VAULT_DIR, "vault"))
+        + list(iter_source_files(RAG_DIR, "rag"))
+        + list(iter_source_files(PRINCIPLES_DIR, "principles"))
+    )
     for rel_path, source, abs_path in sources:
         text = abs_path.read_text(encoding="utf-8", errors="replace")
         frontmatter, body = parse_frontmatter(text)

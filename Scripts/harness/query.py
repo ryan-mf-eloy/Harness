@@ -38,7 +38,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("query")
     parser.add_argument("--limit", type=int, default=8)
-    parser.add_argument("--source", choices=["vault", "rag", "project-docs"])
+    parser.add_argument("--source", choices=["vault", "rag", "principles", "project-docs"])
     parser.add_argument("--project")
     args = parser.parse_args()
 

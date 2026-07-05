@@ -16,7 +16,7 @@ Doc-type skeletons (structure only — fill with real content, don't pad):
 - **ADR** — Context / Decision / Consequences / Alternatives Considered
   (same shape as the Decision template in `Vault/00-System/Templates/`).
 
-Conventions: plain, why-first tone (see `comment-style.md`), no filler, no
+Conventions: plain, why-first tone (see `principles/PRINCIPLES.md`), no filler, no
 emojis. Date-stamp generated docs so a future reader can judge freshness.
 Default to Mermaid-in-markdown for diagrams unless an image is genuinely
 needed.
