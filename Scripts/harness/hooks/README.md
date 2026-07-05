@@ -102,3 +102,17 @@ of the risky commands they name — not an airtight sandbox. The filesystem
 permission lock (`chmod -R a-w RAG/`) and the `permissions.deny` rules in
 settings are independent layers precisely because no single layer is
 complete on its own.
+
+A second, related bug was found and fixed the same way: `guard_rag_immutable.py`
+originally checked "does 'RAG/' appear anywhere in the command" and "does a
+destructive pattern appear anywhere in the command" as two independent,
+whole-string checks — so `echo "...RAG/..." && find . 2>/dev/null` tripped
+it even though the redirect and the RAG/ mention were unrelated parts of
+the same line. Fixed by requiring proximity: a redirect only counts if its
+own target references `RAG/`, and `rm`/`mv`/`truncate`/`shred` only count
+if `RAG/` appears in the same shell sub-command (split on `;`/`&&`/`||`/`|`),
+not just somewhere in a longer multi-part command. Still not real shell
+parsing — the same prose-vs-invocation gap above still applies — but this
+closes the specific "unrelated redirect elsewhere in the line" false
+positive that block_destructive_bash.py's `rm -rf` fix (see git history)
+didn't cover, since that was a different pattern.

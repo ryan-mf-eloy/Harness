@@ -14,7 +14,29 @@ import re
 import sys
 
 RAG_MARKER = "RAG" + "/"
-DESTRUCTIVE_BASH_RE = re.compile(r"\b(rm|mv|truncate|shred)\b|>>?|1>|2>")
+# Split into rough shell sub-commands so a destructive pattern in one part
+# (e.g. a redirect suppressing stderr on an unrelated command) can't be
+# co-mingled with an unrelated "RAG/" mention elsewhere in the same command
+# line -- e.g. `echo "...RAG/..." && find . 2>/dev/null` used to trip this
+# guard even though nothing writes to RAG/. Not real shell parsing (doesn't
+# understand $(...) or block structure), so it can over-split -- that only
+# makes the check MORE conservative, never less, which is the safe
+# direction to err in.
+COMMAND_SEPARATOR_RE = re.compile(r"&&|\|\||[;|\n]")
+DESTRUCTIVE_COMMAND_RE = re.compile(r"\b(rm|mv|truncate|shred)\b")
+# A redirect only counts if ITS TARGET references RAG/, not just any `>`
+# appearing somewhere in a command that separately mentions RAG/ (e.g.
+# `2>/dev/null` used to match this on its own).
+REDIRECT_TO_RAG_RE = re.compile(r">>?\s*\S*" + re.escape(RAG_MARKER))
+
+
+def command_threatens_rag(command: str) -> bool:
+    if REDIRECT_TO_RAG_RE.search(command):
+        return True
+    for segment in COMMAND_SEPARATOR_RE.split(command):
+        if RAG_MARKER in segment and DESTRUCTIVE_COMMAND_RE.search(segment):
+            return True
+    return False
 
 
 def deny(reason: str) -> None:
@@ -48,7 +70,7 @@ def main() -> int:
 
     elif tool_name == "Bash":
         command = tool_input.get("command", "")
-        if RAG_MARKER in command and DESTRUCTIVE_BASH_RE.search(command):
+        if command_threatens_rag(command):
             deny(
                 "Destructive command targeting RAG/ blocked. Follow the "
                 "manual override procedure in RAG/README.md if this change "
