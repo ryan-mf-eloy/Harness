@@ -31,8 +31,8 @@ a parallel version. If you need to change a rule, change it here.
 - **Surgical diffs.** Prefer the smallest change that satisfies the
   acceptance criteria. No drive-by refactors bundled into an unrelated
   change. No renaming/moving files unless that's the explicit ask.
-- **Testing is non-negotiable.** Unit + integration + end-to-end (as
-  applicable) + a sanity check on cyclomatic complexity for anything new or
+- **Testing is non-negotiable.** Unit + integration (as
+  applicable) + end-to-end + a sanity check on cyclomatic complexity for anything new or
   changed — every time, no exception for "small" changes.
 - **Re-validation gate.** Before declaring anything done, re-read the
   original request/acceptance criteria and explicitly check each one off —
