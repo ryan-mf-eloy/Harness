@@ -1,0 +1,4 @@
+# Files copied into every new worktree created via --worktree / EnterWorktree,
+# even though they're gitignored. Empty for now — the harness itself has no
+# .env-equivalents at the root. Project repos onboarded under Codebase/ should
+# carry their own .worktreeinclude if they need one.

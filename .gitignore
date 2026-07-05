@@ -1,0 +1,31 @@
+# Derived search index — always rebuildable from Vault/ and RAG/, never source of truth
+Index/*.sqlite
+Index/*.sqlite-wal
+Index/*.sqlite-shm
+Index/*.sqlite-journal
+Index/.rag-override-active
+
+# Real project repos/symlinks live here — only the registry is tracked
+Codebase/*
+!Codebase/README.md
+!Codebase/REGISTRY.md
+
+# Obsidian UI churn, not cross-machine-meaningful
+Vault/.obsidian/workspace.json
+Vault/.obsidian/workspace-mobile.json
+
+# Project-scoped Claude Code state for this repo: settings.json IS tracked
+# (it's the shared hook config), but personal overrides and runtime locks
+# are not.
+.claude/settings.local.json
+.claude/scheduled_tasks.lock
+.claude/*.lock
+
+# Secrets — defense in depth, this folder should only ever hold manifest.yaml anyway
+Secrets/*
+!Secrets/manifest.yaml
+!Secrets/README.md
+
+.DS_Store
+*.pyc
+__pycache__/

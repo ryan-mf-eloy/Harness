@@ -1,0 +1,8 @@
+@AGENTS.md
+
+## Claude Code
+<!-- Claude-Code-specific additions only — never duplicate AGENTS.md content
+     here. Example:
+     Use plan mode for changes under `src/billing/`.
+     Prefer the `data-analyst` subagent for anything touching `analytics/`.
+-->

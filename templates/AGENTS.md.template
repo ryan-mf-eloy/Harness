@@ -1,0 +1,55 @@
+# <Project Name> — Agent Guide
+
+<!-- PLACEHOLDER — fill in per project. Do not invent specifics; leave a
+     section blank or marked TODO rather than guessing. -->
+
+## System Overview
+
+<!-- One paragraph: what this system does, who it's for, one-sentence
+     architecture summary. -->
+
+## Where to Modify
+
+### By runtime / service boundary
+- `<path>` — <!-- what it owns, when you'd touch it -->
+
+### By concern (cross-cutting)
+- Auth: `<path>`
+- API surface: `<path>`
+- Config/env: `<path>`
+
+### Tests
+- Unit: `<path>`, run with `<command>`
+- Integration: `<path>`, run with `<command>`
+
+### Database
+- Schema/migrations: `<path>`
+- Local bootstrap: `<command>`
+
+### POCs / experiments / scratch
+- `<path>` — rule for when something graduates out of here
+
+## Validation
+
+```bash
+<exact lint/typecheck/test/build commands, copy-pasteable>
+```
+
+## Safety Rules
+
+<!-- project-specific non-negotiables: what never to touch, what always
+     needs human review -->
+
+## Shared Harness Conventions
+
+This project inherits cross-project conventions automatically via
+`~/.claude/` (deployed from the Harness repo):
+- Engineering principles: `~/.claude/rules/engineering-principles.md`,
+  `~/.claude/rules/surgical-changes.md`, `~/.claude/rules/architecture-culture.md`
+- Specialist subagents: `~/.claude/agents/` (risk-analyst, pr-drafter,
+  data-analyst, log-analyst, docs-writer, task-triage, debugger)
+- Secrets-by-label convention: see the Harness repo's `Secrets/manifest.yaml`
+  and `Scripts/harness/secure/`
+
+Project-specific rules in this file always take precedence over general
+Harness conventions when they conflict.

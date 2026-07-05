@@ -1,0 +1,21 @@
+{
+  "autoMemoryDirectory": "${CLAUDE_PROJECT_DIR}/Vault/40-Memory/harness-self",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PROJECT_DIR}/Scripts/harness/guard_rag_immutable.py\"" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "python3 \"${CLAUDE_PROJECT_DIR}/Scripts/harness/index_upsert.py\"" }
+        ]
+      }
+    ]
+  }
+}
