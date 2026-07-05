@@ -40,13 +40,26 @@ every tool without being duplicated:
 | Claude Code (any project) | `~/.claude/CLAUDE.md` is a symlink to `principles/PRINCIPLES.md`, loaded in every session regardless of project |
 | Codex CLI (any project) | `~/.codex/AGENTS.md` is a symlink to the same file — Codex reads this as its global instruction layer before any project-specific `AGENTS.md` |
 | Cursor (any project) | Cursor reads a project's own `AGENTS.md` as a fallback natively; this repo's `.cursorrules` and `.cursor/rules/agents.mdc` point at `AGENTS.md`/`principles/PRINCIPLES.md` explicitly for robustness |
-| A newly onboarded project (any tool) | `templates/AGENTS.md.template` stamps the full content of `principles/PRINCIPLES.md` directly into that project's own `AGENTS.md`, since Cursor/Codex only read whatever `AGENTS.md` exists at that project's own root — see `Scripts/shared/onboard-project.sh` |
+| A newly onboarded project (any tool) | `templates/AGENTS.md.template` stamps the full content of `principles/PRINCIPLES.md` directly into that project's own `AGENTS.md`, since Cursor/Codex only read whatever `AGENTS.md` exists at that project's own root — see `Scripts/shared/onboard-project/onboard.py`, or just ask an agent for the `/onboard-project` skill |
 
 Only the packaging under `claude/` (subagents, skills, hooks, permissions)
 is genuinely Claude-Code-specific — there is no equivalent mechanism yet in
-Cursor or Codex CLI. The instructions inside each skill/subagent file are
-still plain markdown a human or another tool can read and follow manually;
-only the YAML-frontmatter invocation sugar is Claude-Code-only.
+Codex CLI. The instructions inside each skill/subagent file are still plain
+markdown a human or another tool can read and follow manually; only the
+YAML-frontmatter invocation sugar is Claude-Code-only.
+
+### Passive loading isn't enough — active reinforcement
+
+Principles sitting in context (even reliably, across `/compact`) is not the
+same as being *considered* on turn 400 of a long implementation. Claude
+Code and Cursor both also get a reinforcement hook
+(`Scripts/harness/hooks/reinforce_principles.py` /
+`reinforce_principles_cursor.py`) that injects a short checklist right
+before every code-modifying action, escalating once a session has touched
+5+ files. This is still advisory, not a guarantee — see
+`Scripts/harness/hooks/README.md` for exactly what it does and does not
+cover, and why Codex CLI has no equivalent (its enforcement is an OS-level
+sandbox, not a context-injection hook system).
 
 ## Precedence
 

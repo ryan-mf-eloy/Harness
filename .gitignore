@@ -5,6 +5,11 @@ Index/*.sqlite-shm
 Index/*.sqlite-journal
 Index/.rag-override-active
 
+# Per-session ephemeral state (e.g. touched-file tracking for the
+# reinforce_principles hook) — scoped to one session's lifetime, never
+# meant to persist or be shared
+Index/session-state/
+
 # Real project repos/symlinks live here — only the registry is tracked
 Codebase/*
 !Codebase/README.md
