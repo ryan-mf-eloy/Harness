@@ -65,7 +65,11 @@ def main() -> int:
             "Files were modified this turn but no test command was observed. "
             "Per the engineering-principles rule, run the appropriate test "
             "suite before finishing, or state explicitly why tests don't "
-            "apply (e.g. `<no-tests-required: docs-only change>`)."
+            "apply (e.g. `<no-tests-required: docs-only change>`). For a "
+            "non-trivial change, this mechanical check is a floor, not the "
+            "real review -- the pre-delivery-review skill covers what this "
+            "hook can't (multi-source cross-check, not just 'was a test "
+            "command typed')."
         ),
     }))
     return 0
