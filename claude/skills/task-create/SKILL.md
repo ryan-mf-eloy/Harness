@@ -24,3 +24,6 @@ argument-hint: "<short description of the work>"
 5. If an MCP connector for the chosen tracker is configured, create the task
    directly via that MCP after drafting; otherwise output the draft as
    markdown for manual paste.
+6. Before creating: the ticket is read by teammates — check it against the
+   "Internal vocabulary stays internal" principle (no harness/workspace
+   jargon, no internal file paths).

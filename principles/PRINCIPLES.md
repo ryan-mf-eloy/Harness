@@ -139,6 +139,18 @@ changes.
   **what changed**, then anything the user needs to do next.
 - No emojis unless explicitly requested. State intent plainly rather than
   narrating each step.
+- **Internal vocabulary stays internal.** Harness-specific terms ("the
+  Harness", a folder name like `RAG/` or `Vault/`, a specific skill or
+  subagent name) and this machine's absolute file paths are operational
+  vocabulary for your own reasoning — not for a PR description, commit
+  message, code comment, task-tracker ticket, or any business/domain
+  document a teammate, client, or reviewer without this context will read.
+  Translate to what was actually done and verified, not which internal
+  folder or skill did it. The same applies to verbatim memory/Vault note
+  content — summarize the relevant fact, don't paste internal notes into
+  external-facing output. This doesn't apply to a project's own
+  `AGENTS.md`/`CLAUDE.md` — referencing the harness there is the intended
+  integration point, not a leak.
 
 ## Non-negotiable safety rules
 

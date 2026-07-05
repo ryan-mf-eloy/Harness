@@ -34,12 +34,19 @@ the diff looks clean — a clean diff is not the same as a verified result.
 6. **State verified vs. assumed, explicitly and separately.** Don't let a
    confident tone imply more certainty than the evidence supports — say
    plainly what you checked and what you didn't get to.
-7. **If this was genuinely novel** (no precedent was found in step 2 of
+7. **If the deliverable is external-facing** (a PR, commit message, task
+   ticket, or document a teammate/client/reviewer without this workspace's
+   context will read), scan it for leaked harness vocabulary — internal
+   folder names, skill/subagent names, this machine's file paths — per the
+   "Internal vocabulary stays internal" principle. A project's own
+   `AGENTS.md`/`CLAUDE.md` is the one exception; referencing the harness
+   there is the intended integration point.
+8. **If this was genuinely novel** (no precedent was found in step 2 of
    `pre-change-impact-check`), write it up in `Vault/20-Knowledge/` — see
    that folder's `README.md` for the format. This is the step that closes
    the precedent-before-invention loop: the next agent's search should
    find this instead of re-solving it from nothing.
-8. **Hygiene pass.** Does this make any existing Vault/memory note stale
+9. **Hygiene pass.** Does this make any existing Vault/memory note stale
    or wrong? Update that note instead of leaving a new, contradicting one
    beside it — see the `consolidate-memory` skill if memory has
    accumulated enough that a broader cleanup is due, not just this one

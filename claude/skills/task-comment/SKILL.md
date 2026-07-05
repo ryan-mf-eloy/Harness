@@ -18,3 +18,5 @@ argument-hint: "<ticket-key> <update-summary>"
    the comment text for manual paste.
    > Project-specific: exact MCP tool name/params depend on which tracker is
    > chosen — fill in once `task-manager-culture` is configured.
+5. Same rule as ticket creation: check the comment against "Internal
+   vocabulary stays internal" before posting — teammates read this too.

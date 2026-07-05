@@ -20,7 +20,13 @@ allowed-tools: Bash(git status*), Bash(git diff*), Bash(git log*), Bash(git push
      key, otherwise ask.
    - Testing Performed must list concrete, verifiable commands/results —
      not "tested manually" with no detail.
-4. **Push and create** — push the branch with `-u` if not already tracking
+4. **Scan the drafted text before pushing** — a PR description is read by
+   teammates who may not share this workspace's internal vocabulary. Per
+   the "Internal vocabulary stays internal" principle, remove any mention
+   of the Harness, internal folder names, skill/subagent names, or this
+   machine's file paths — describe what changed and how it was verified,
+   not which internal tool did it.
+5. **Push and create** — push the branch with `-u` if not already tracking
    upstream, then `gh pr create --title "..." --body "$(cat <<'EOF' ... EOF)"`
    (heredoc form, to avoid quoting issues).
-5. Return the PR URL. Never merge, never force-push.
+6. Return the PR URL. Never merge, never force-push.
