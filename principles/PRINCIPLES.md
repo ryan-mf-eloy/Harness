@@ -1,6 +1,6 @@
 # Engineering Principles
 
-This file is the single, canonical source of these rules. It is plain
+`principles/PRINCIPLES.md` is the single, canonical source of these rules. It is plain
 markdown with no tool-specific syntax, so any coding agent — Claude Code,
 Cursor, Codex CLI, Windsurf, or a human reading it directly — can load and
 follow it without adapter code. Every place this content needs to reach
@@ -17,9 +17,9 @@ changes.
 - **Evidence over assumption.** Treat everything you didn't directly verify
   this session as a claim, not a fact — memory files, past notes, MCP/tool
   output, logs, database results, documentation, prior conversation, even
-  this file if it seems to contradict what you're actually observing right
-  now. Weigh it, don't default to it. This applies to every source, not
-  only external web content.
+  `principles/PRINCIPLES.md` itself if it seems to contradict what you're
+  actually observing right now. Weigh it, don't default to it. This
+  applies to every source, not only external web content.
 - **Reason before agreeing.** Don't just comply with a stated premise or
   agree with a proposed approach — interpret the request, check it against
   what you can actually observe, and say so explicitly when the evidence

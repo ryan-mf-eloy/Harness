@@ -1,3 +1,10 @@
+---
+type: reference
+tags: [rag, policy]
+status: active
+created: 2026-07-05
+---
+
 # RAG — Source of Truth
 
 Files under `RAG/business/<project-slug>/` are treated as near-immutable

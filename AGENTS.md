@@ -28,6 +28,7 @@ project, and no project is ever nested inside this repo.
 | Derived search index (rebuildable, gitignored) | `Index/harness.sqlite` |
 | Index of real project repositories | `Codebase/REGISTRY.md` |
 | Templates for onboarding a new project | `templates/` |
+| How to write markdown for agent reading/indexing | `Vault/00-System/Writing Conventions.md` |
 
 ## Provider-agnostic by construction
 
