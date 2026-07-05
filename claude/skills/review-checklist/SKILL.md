@@ -15,6 +15,13 @@ House-style checklist (cite line numbers on any "no"):
 - No new code was added where an equivalent already existed.
 - SOLID / Law of Demeter / Object Calisthenics spot-check on any new or
   changed class.
+- Layer discipline: business rules/validation live in the layer this
+  project's own convention designates for them (see the project's
+  `AGENTS.md` "Where to Modify" → "By layer" map, or
+  `principles/PRINCIPLES.md`'s "Layer discipline" bullet if the project
+  hasn't documented its own layer names yet) — flag a business rule or
+  validation check found in a layer that owns a different concern (e.g.
+  in a controller/route/UI layer instead of domain/service).
 - Cyclomatic complexity of new/changed functions is reasonable — flag
   anything that reads as needing a split.
   > Project-specific: once a linter/complexity tool is chosen for the

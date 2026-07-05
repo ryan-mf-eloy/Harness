@@ -29,7 +29,9 @@ verifies.
    - *Low* — isolated, well-tested, reversible.
    - *Medium* — touches more than one module, or has partial test coverage.
    - *High* — crosses module boundaries with no test coverage, touches
-     auth/payments/migrations, or changes a public interface.
+     auth/payments/migrations, changes a public interface, or crosses a
+     bounded context / introduces a cross-layer violation (see "Layer
+     discipline" in `principles/PRINCIPLES.md`).
    For medium/high, surface this explicitly to the user before proceeding
    and name the specific risk — don't bury it in the implementation. Risk
    tier also sets how much research step 2 and 3 deserve: don't spend a

@@ -13,6 +13,22 @@
 ### By runtime / service boundary
 - `<path>` — <!-- what it owns, when you'd touch it -->
 
+### By layer (if this project uses explicit layering)
+<!-- Name this project's actual layers here once chosen — e.g. domain /
+     application / infrastructure, or presentation / service / repository.
+     Layers are project-specific (see principles/PRINCIPLES.md's
+     "Dependency direction" and "Layer discipline" bullets) — don't invent
+     names here, record what THIS project actually calls them. Skip this
+     whole subsection if the project doesn't use explicit layers (e.g. a
+     small script or single CRUD app) — imposing layer names it doesn't
+     need would itself be the over-engineering the principles warn
+     against. Once chosen, this is an architectural decision worth an ADR
+     (see doc-create skill / Vault/00-System/Templates/Decision.md). -->
+- `<layer name>` — <!-- what belongs here, what does NOT belong here -->
+- `<layer name>` — <!-- what belongs here, what does NOT belong here -->
+- Bounded contexts (if applicable): <!-- context name -> module root,
+  e.g. Billing -> src/billing/, Catalog -> src/catalog/ -->
+
 ### By concern (cross-cutting)
 - Auth: `<path>`
 - API surface: `<path>`

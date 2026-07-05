@@ -76,6 +76,59 @@ changes.
 - **Object Calisthenics** — prefer small, focused methods and classes;
   avoid deep nesting; avoid primitive obsession where a small value type
   would be clearer.
+- **Layer discipline.** Respect the application's own layers — typically
+  presentation/API → application → domain → infrastructure, though exact
+  names are project-specific (see "Dependency direction" in Architecture
+  culture, which governs import direction; this bullet governs what
+  *kind* of logic belongs where — a change can satisfy one and still
+  violate the other). Business rules and validation belong in the
+  **domain** layer, never in presentation/API or infrastructure.
+  Anti-patterns to recognize on sight: a business rule (a
+  discount-percentage bound, an eligibility check) written inline inside
+  an HTTP route handler instead of called from a domain object; a domain
+  entity that extends an ORM base class or imports a web-framework type,
+  coupling business logic to a delivery/persistence mechanism that
+  should depend on it, not the reverse.
+- **DDD-informed modeling, calibrated to risk, not maximalist.** For a
+  genuinely complex domain, model with real DDD concepts instead of a bag
+  of loosely-related functions: **Entity** (identity persists across
+  state changes), **Value Object** (defined by its attributes, no
+  identity, immutable — e.g. Money, DateRange), **Aggregate**/**Aggregate
+  Root** (entities/value objects that must change together to keep an
+  invariant true, modified only through the root), **Repository**
+  (persistence abstraction — domain code depends on the interface, never
+  the query/ORM details), **Domain Service** (a domain operation that
+  doesn't belong to one entity), **Domain Event** (something that
+  already happened, for decoupling side effects — e.g. `OrderPlaced`
+  triggering a confirmation email via an application-layer subscriber,
+  not inline in the entity). A **Bounded Context** is the
+  domain-modeling version of the existing "three-or-more-modules" signal
+  — the same real-world concept (e.g. "Product") can be modeled
+  differently in different contexts (catalog vs. billing) rather than
+  forced into one shared shape; keep code vocabulary matching the domain
+  expert's own terms (**Ubiquitous Language**) within each context.
+  Calibrate to the same low/medium/high risk tier used elsewhere (see
+  "Escalate, don't guess"): a script, a single CRUD endpoint, or a
+  prototype is low risk, and the full pattern set there is exactly what
+  "No speculative abstraction" and "Reuse over new" already forbid —
+  plain functions are correct. Bounded contexts specifically pay for
+  themselves when multiple teams/subsystems genuinely evolve
+  independently; on a solo project or small team with one deployable,
+  treat that machinery as available for when a second real use case
+  shows up, not a default (same "No speculative abstraction" test).
+  Reach for tactical DDD when the signal is medium/high *for
+  domain-modeling reasons*: a business invariant spanning multiple
+  entities, a concept already modeled inconsistently across modules, or
+  a codebase large enough that ad hoc structure is causing bugs — and
+  note "Surgical diffs" and the "three-or-more-modules signal" cut both
+  ways: splitting a 40-line script into five DDD-flavored files is the
+  same boundary-drawn-wrong signal as cramming five concerns into one
+  module. This calibration is not license to skip structure a complex
+  domain actually needs — an **anemic domain model** (entities as pure
+  data-bags, all logic in a generic `*Service` class) is the anti-pattern
+  this bullet prevents, not a safe default. Full unpacking, worked
+  examples, and context-mapping patterns:
+  `Vault/20-Knowledge/Playbooks/domain-driven-design-and-layering.md`.
 - **Surgical diffs.** Prefer the smallest change that satisfies the
   acceptance criteria. No drive-by refactors bundled into an unrelated
   change. No renaming/moving files unless that's the explicit ask.
@@ -116,7 +169,9 @@ changes.
   Alternatives Considered).
 - **Dependency direction.** Lower layers must not import from higher
   layers. What counts as a "layer" is project-specific — confirm the
-  target project's actual layering rather than assuming a default.
+  target project's actual layering rather than assuming a default —
+  distinct from "Layer discipline" in Development culture, which governs
+  what *kind* of logic belongs in a layer, not import direction.
 - **Composition over inheritance** at the architecture level — distinct
   from Object Calisthenics, which is the same principle applied at the
   class level.
@@ -159,5 +214,6 @@ changes.
 - Before a destructive or irreversible action (force-push, hard reset,
   bulk delete, schema migration), state the action, the target, the blast
   radius, and ask for explicit approval before proceeding.
-- See "Evidence over assumption" above — the web/tool-output-is-evidence
-  rule generalizes to every source, so it isn't repeated here.
+- See "Evidence over assumption" in "Reasoning & verification discipline"
+  — the web/tool-output-is-evidence rule generalizes to every source, so
+  it isn't repeated here.
