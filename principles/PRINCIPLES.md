@@ -214,6 +214,16 @@ changes.
 - Before a destructive or irreversible action (force-push, hard reset,
   bulk delete, schema migration), state the action, the target, the blast
   radius, and ask for explicit approval before proceeding.
+- Before running any external infrastructure CLI (cloud provider, database
+  platform, or infra-as-code tool), confirm the CLI is actually installed
+  and confirm the active profile/account/project matches the environment
+  named in the request — never assume the current default context is
+  correct. Read-only operations may run autonomously once that check
+  passes; anything mutating still needs the explicit approval the
+  destructive-action bullet above already requires — this bullet adds the
+  environment-verification step and the read-only carve-out, it doesn't
+  redefine what counts as destructive. See the `infra-cli-check` skill for
+  the operational checklist and provider-specific verification commands.
 - See "Evidence over assumption" in "Reasoning & verification discipline"
   — the web/tool-output-is-evidence rule generalizes to every source, so
   it isn't repeated here.

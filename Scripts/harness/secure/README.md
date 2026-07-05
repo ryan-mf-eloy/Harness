@@ -3,6 +3,15 @@
 Two complementary patterns live here. Neither ever stores or prints a secret
 value — that principle is non-negotiable (see `AGENTS.md`).
 
+The read-only wrapper pattern below (pattern 1) generalizes beyond
+secret-adjacent services — it's the same mechanism for safe, autonomous,
+read-only access to any external CLI, including infrastructure providers
+(AWS, GCP, Azure, Firebase, Supabase) and infra-as-code/orchestration tools
+(Terraform, kubectl). See `principles/PRINCIPLES.md`'s "Non-negotiable
+safety rules" and the `infra-cli-check` skill for when a mutating action
+against one of these needs explicit approval instead of running
+autonomously.
+
 ## 1. Read-only wrapper per external service (primary pattern)
 
 For any service reachable through its own already-authenticated CLI (`gh`,

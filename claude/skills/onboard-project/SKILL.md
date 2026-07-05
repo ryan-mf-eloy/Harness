@@ -38,7 +38,11 @@ which would resolve to that *other* project, not the Harness).
    This writes/refreshes `AGENTS.md` (principles stamped in verbatim),
    `CLAUDE.md`, `.cursorrules`, and `.claude/settings.json` with
    `autoMemoryDirectory` pointed at
-   `Harness/Vault/40-Memory/<slug>/` (created if missing).
+   `Harness/Vault/40-Memory/<slug>/` (created if missing). If
+   `settings.json` is being created fresh, it's also seeded with the
+   `permissions` block from `templates/settings.permissions-baseline.json`
+   (an existing `settings.json` is left untouched — review the baseline by
+   hand in that case).
 
 4. **Report the manual steps that are left** — these genuinely need a human
    judgment call, don't attempt to fill them in yourself:

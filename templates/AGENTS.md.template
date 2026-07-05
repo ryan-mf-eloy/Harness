@@ -51,6 +51,22 @@
 <exact lint/typecheck/test/build commands, copy-pasteable>
 ```
 
+## Infrastructure & Environments
+
+<!-- Skip entirely if this project has no cloud/infra CLI surface. Fill in
+     one row per environment this project actually uses. Don't invent
+     rows speculatively — add one only once a real environment exists. -->
+
+| Environment | Provider | Profile / account / project ID | Read-only wrapper | Context-switch command |
+|---|---|---|---|---|
+| `<name, e.g. staging>` | `<aws/gcp/azure/firebase/supabase/...>` | `<profile name / account ID / project ID>` | `<path, or "none yet">` | `<exact command, e.g. aws configure --profile staging>` |
+
+Before any command against one of these environments, follow the
+`infra-cli-check` skill — confirm the CLI is installed, confirm/switch to
+the row's profile/account/project (never assume the current default
+context matches), and treat only read-only operations as safe to run
+without asking first.
+
 ## Safety Rules
 
 <!-- project-specific non-negotiables: what never to touch, what always

@@ -14,7 +14,10 @@ What it does:
      @AGENTS.md pointer, for Claude Code).
   3. Writes <project>/.cursorrules (thin pointer, for Cursor).
   4. Ensures <project>/.claude/settings.json sets autoMemoryDirectory into
-     this repo's Vault/40-Memory/<slug>/, creating that folder first.
+     this repo's Vault/40-Memory/<slug>/, creating that folder first. If
+     settings.json is being created fresh, also seeds it with the
+     permissions block from templates/settings.permissions-baseline.json
+     (an existing settings.json is left untouched, as before).
   5. Prints a reminder to add a row to Codebase/REGISTRY.md (not automated,
      since the registry's other columns — status, notes — need a human
      judgment call, not a guessed default).
@@ -26,6 +29,7 @@ inside an existing AGENTS.md, if one already exists).
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
@@ -33,6 +37,7 @@ HARNESS_ROOT = Path(__file__).resolve().parents[3]
 PRINCIPLES = HARNESS_ROOT / "principles" / "PRINCIPLES.md"
 AGENTS_TEMPLATE = HARNESS_ROOT / "templates" / "AGENTS.md.template"
 CLAUDE_TEMPLATE = HARNESS_ROOT / "templates" / "CLAUDE.md.template"
+PERMISSIONS_BASELINE = HARNESS_ROOT / "templates" / "settings.permissions-baseline.json"
 
 BEGIN_MARKER = "<!-- HARNESS:PRINCIPLES:BEGIN"
 END_MARKER = "<!-- HARNESS:PRINCIPLES:END -->"
@@ -95,14 +100,19 @@ def main() -> int:
     claude_dir.mkdir(exist_ok=True)
     settings_path = claude_dir / "settings.json"
     if not settings_path.exists():
-        settings_path.write_text(
-            '{\n  "autoMemoryDirectory": "' + str(memory_dir) + '"\n}\n',
-            encoding="utf-8",
-        )
-        print(f"wrote {settings_path}")
+        baseline = json.loads(PERMISSIONS_BASELINE.read_text(encoding="utf-8"))
+        settings = {
+            "autoMemoryDirectory": str(memory_dir),
+            "permissions": baseline["permissions"],
+        }
+        settings_path.write_text(json.dumps(settings, indent=2) + "\n", encoding="utf-8")
+        print(f"wrote {settings_path} (permissions seeded from "
+              f"templates/settings.permissions-baseline.json)")
     else:
         print(f"{settings_path} already exists — not overwriting; "
-              f"add \"autoMemoryDirectory\": \"{memory_dir}\" to it by hand if missing.")
+              f"add \"autoMemoryDirectory\": \"{memory_dir}\" to it by hand if missing, "
+              f"and review templates/settings.permissions-baseline.json for any "
+              f"permissions entries this project's settings.json is missing.")
 
     print()
     print(f"Next: add a row for '{slug}' to {HARNESS_ROOT / 'Codebase' / 'REGISTRY.md'} by hand "

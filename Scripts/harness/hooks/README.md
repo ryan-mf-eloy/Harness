@@ -41,11 +41,14 @@ rather than risk blocking unrelated work on a parsing bug — a hook that
 fails closed on its own error is worse than the guardrail it's trying to
 enforce.
 
-When onboarding a new project, copy `templates/settings.permissions-baseline.json`
-into that project's own `.claude/settings.json` as a starting point — it
-does not carry the hooks above, since those are either global already
-(no copy needed) or specific to this repo's own `RAG/`/`Vault/` paths (not
-meaningful in another project).
+`Scripts/shared/onboard-project/onboard.py` seeds a newly-created project's
+`.claude/settings.json` with `templates/settings.permissions-baseline.json`'s
+`permissions` block automatically — it does not carry the hooks above,
+since those are either global already (no copy needed) or specific to this
+repo's own `RAG/`/`Vault/` paths (not meaningful in another project). If
+that project already had a `settings.json` before onboarding, the merge is
+skipped (existing files are never overwritten) — review the baseline by
+hand in that case.
 
 ## Cross-provider: Cursor and Codex CLI
 
