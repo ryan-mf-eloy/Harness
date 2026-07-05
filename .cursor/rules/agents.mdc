@@ -1,8 +1,6 @@
 ---
-description: Points to this repo's canonical AGENTS.md and principles/PRINCIPLES.md instead of duplicating their content here
 alwaysApply: true
 ---
-
 See `AGENTS.md` for how this repo works and `principles/PRINCIPLES.md` for
 the engineering principles that apply to every project, not just this one.
 This file is intentionally a thin pointer — edit the source files, not this

@@ -1,8 +1,12 @@
 # Codebase
 
 Real project repositories are **not** cloned or nested inside this folder.
-They stay wherever they naturally live on disk (another folder, `~/dev/`,
-wherever). This folder holds only `REGISTRY.md`, an index pointing at them.
+They stay wherever the user explicitly says to put them — **never inferred,
+never searched for**. No agent should look inside any other folder on this
+machine (`~/dev`, or anywhere else) to find or suggest a location; the path
+always comes from the user, stated directly. This folder holds only
+`REGISTRY.md`, an index pointing at wherever those explicitly-given paths
+are.
 
 ## Why not nest them here
 
@@ -20,11 +24,15 @@ guarantees isolation.
 
 ## Onboarding a new project
 
-1. Add a row to `REGISTRY.md`.
-2. Copy `templates/AGENTS.md.template` and `templates/CLAUDE.md.template`
-   into the project's root, filling in the placeholders.
-3. In that project's `.claude/settings.json`, set `autoMemoryDirectory` to
-   `Vault/40-Memory/<slug>/` (absolute path) and `mkdir -p` that folder first.
-4. Add any project-specific specialists to that project's own
+Give the agent the project's slug and its absolute path (or ask for the
+`/onboard-project` skill directly) — never a folder to go look in. It runs
+`Scripts/shared/onboard-project/onboard.py`, which writes/refreshes
+`AGENTS.md` (principles stamped in), `CLAUDE.md`, `.cursorrules`, and
+`.claude/settings.json` (`autoMemoryDirectory` pointed at
+`Vault/40-Memory/<slug>/`). Two things still need a human, by design:
+
+1. Add a row to `REGISTRY.md` (status/notes need a judgment call).
+2. Fill in the `AGENTS.md` placeholders with real project knowledge, and
+   add any project-specific specialists to that project's own
    `.claude/agents/` — the harness-level roster in `~/.claude/agents/` is
    generic on purpose (see `claude/agents/`).
