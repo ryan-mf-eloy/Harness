@@ -16,6 +16,9 @@ CLAUDE.md             thin Claude Code pointer: @AGENTS.md
 ONBOARDING.md         full procedure for onboarding a new project onto the harness
 principles/           PRINCIPLES.md — the actual rules content, provider-agnostic
 claude/               agents/ skills/ — Claude-Code-specific packaging, symlinked into ~/.claude/
+.cursor/agents/       Cursor-specific subagent translations, symlinked into ~/.cursor/agents/
+.codex/agents/        Codex-CLI-specific subagent translations (TOML), symlinked into ~/.codex/agents/
+.agents/skills        symlink to claude/skills — shared discovery path Cursor + Codex CLI both scan
 Vault/                Obsidian vault: memory + documentation
 RAG/                  immutable business/domain source of truth
 Secrets/              label manifest only, never values
@@ -30,8 +33,10 @@ templates/            AGENTS.md / CLAUDE.md / PR templates for onboarding a new 
 
 ```bash
 mkdir -p ~/.claude
+mkdir -p ~/.agents
 ln -s "$PWD/claude/agents"          ~/.claude/agents
 ln -s "$PWD/claude/skills"          ~/.claude/skills
+ln -s "$PWD/claude/skills"          ~/.agents/skills       # global reach for Cursor + Codex CLI skill discovery
 ln -s "$PWD/principles/PRINCIPLES.md" ~/.claude/CLAUDE.md   # global reach for Claude Code
 ln -s "$PWD/principles/PRINCIPLES.md" ~/.codex/AGENTS.md    # global reach for Codex CLI
 python3 Scripts/harness/index_rebuild.py

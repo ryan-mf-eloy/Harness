@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "matcher": "Write|Edit|Delete",
+        "command": "python3 \"${CURSOR_PROJECT_DIR}/Scripts/harness/guard_rag_immutable.py\"",
+        "type": "command"
+      },
+      {
+        "matcher": "Shell",
+        "command": "python3 \"${CURSOR_PROJECT_DIR}/Scripts/harness/guard_rag_immutable.py\"",
+        "type": "command"
+      }
+    ]
+  }
+}

@@ -4,6 +4,11 @@ regardless of what the model decides. This is deliberately redundant with
 the `permissions.deny` block in ~/.claude/settings.json — both need to agree
 to let a destructive command through, which is the point (defense in depth,
 not a single point of failure if one list is ever edited carelessly).
+
+Deny mechanism: exit code 2 with the reason on stderr. This is the one deny
+convention confirmed identical across Claude Code, Cursor, and Codex CLI
+(see Scripts/harness/hooks/README.md's cross-provider section), which is
+why this same file is wired into all three tools' hook configs unmodified.
 """
 import json
 import re
@@ -38,18 +43,13 @@ def main() -> int:
 
     for pattern, label in DESTRUCTIVE_PATTERNS:
         if pattern.search(command):
-            print(json.dumps({
-                "hookSpecificOutput": {
-                    "hookEventName": "PreToolUse",
-                    "permissionDecision": "deny",
-                    "permissionDecisionReason": (
-                        f"Blocked by harness guardrail: matched destructive "
-                        f"pattern '{label}'. If this is genuinely intended, "
-                        f"it needs to be run manually by the user, not by an agent."
-                    ),
-                }
-            }))
-            return 0
+            print(
+                f"Blocked by harness guardrail: matched destructive pattern "
+                f"'{label}'. If this is genuinely intended, it needs to be "
+                f"run manually by the user, not by an agent.",
+                file=sys.stderr,
+            )
+            return 2
 
     return 0
 

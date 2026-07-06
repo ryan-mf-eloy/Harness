@@ -14,28 +14,15 @@ Escape hatch: if the assistant's final message contains the literal marker
 for turns that legitimately don't need one (docs-only changes, pure
 investigation). Without an escape hatch this becomes the kind of hook people
 just disable.
+
+Detection logic lives in _revalidation_common.py, shared with the Codex CLI
+variant (check_tests_and_revalidation_codex.py) so the two can never
+disagree on what counts as "files changed" or "a test was run."
 """
 import json
-import re
 import sys
-from pathlib import Path
 
-TEST_COMMAND_RE = re.compile(
-    r"\b(npm (run )?test|pytest|go test|cargo test|jest|vitest|rspec|phpunit)\b",
-    re.IGNORECASE,
-)
-NO_TESTS_MARKER_RE = re.compile(r"<no-tests-required:.*?>", re.IGNORECASE)
-
-
-def read_transcript_tail(transcript_path: str, max_lines: int = 400) -> str:
-    path = Path(transcript_path)
-    if not path.exists():
-        return ""
-    try:
-        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
-    except OSError:
-        return ""
-    return "\n".join(lines[-max_lines:])
+from _revalidation_common import files_changed_without_tests, read_transcript_tail
 
 
 def main() -> int:
@@ -46,32 +33,11 @@ def main() -> int:
 
     transcript_path = payload.get("transcript_path", "")
     tail = read_transcript_tail(transcript_path)
-    if not tail:
-        return 0  # can't inspect the transcript — fail open rather than block blindly
 
-    files_changed = '"tool_name":"Edit"' in tail or '"tool_name":"Write"' in tail or '"tool_name":"MultiEdit"' in tail
-    if not files_changed:
-        return 0  # pure investigation/planning turn — nothing to gate
+    should_block, reason = files_changed_without_tests(tail)
+    if should_block:
+        print(json.dumps({"decision": "block", "reason": reason}))
 
-    if NO_TESTS_MARKER_RE.search(tail):
-        return 0  # explicit, auditable escape hatch used
-
-    if TEST_COMMAND_RE.search(tail):
-        return 0  # a test command was observed somewhere in this turn
-
-    print(json.dumps({
-        "decision": "block",
-        "reason": (
-            "Files were modified this turn but no test command was observed. "
-            "Per the engineering-principles rule, run the appropriate test "
-            "suite before finishing, or state explicitly why tests don't "
-            "apply (e.g. `<no-tests-required: docs-only change>`). For a "
-            "non-trivial change, this mechanical check is a floor, not the "
-            "real review -- the pre-delivery-review skill covers what this "
-            "hook can't (multi-source cross-check, not just 'was a test "
-            "command typed')."
-        ),
-    }))
     return 0
 
 
