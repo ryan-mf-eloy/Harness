@@ -24,15 +24,17 @@ guarantees isolation.
 
 ## Onboarding a new project
 
-Give the agent the project's slug and its absolute path (or ask for the
-`/onboard-project` skill directly) — never a folder to go look in. It runs
-`Scripts/shared/onboard-project/onboard.py`, which writes/refreshes
-`AGENTS.md` (principles stamped in), `CLAUDE.md`, `.cursorrules`, and
-`.claude/settings.json` (`autoMemoryDirectory` pointed at
-`Vault/40-Memory/<slug>/`). Two things still need a human, by design:
+Give the agent the project's slug, its absolute path, and a short project
+overview (or ask for the `/onboard-project` skill directly) — never a
+folder to go look in. The full procedure lives in `ONBOARDING.md` at this
+repo's root: it writes/refreshes `AGENTS.md` (principles stamped in, and
+pre-filled from the overview wherever the overview gives real signal),
+`CLAUDE.md`, `.cursorrules`, and `.claude/settings.json`
+(`autoMemoryDirectory` pointed at `Vault/40-Memory/<slug>/`). Two things
+still need a human, by design:
 
 1. Add a row to `REGISTRY.md` (status/notes need a judgment call).
-2. Fill in the `AGENTS.md` placeholders with real project knowledge, and
-   add any project-specific specialists to that project's own
-   `.claude/agents/` — the harness-level roster in `~/.claude/agents/` is
-   generic on purpose (see `claude/agents/`).
+2. Confirm or refine whatever `AGENTS.md` sections the overview didn't give
+   enough signal to pre-fill, and add any project-specific specialists to
+   that project's own `.claude/agents/` — the harness-level roster in
+   `~/.claude/agents/` is generic on purpose (see `claude/agents/`).

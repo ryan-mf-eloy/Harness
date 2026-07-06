@@ -28,6 +28,7 @@ project, and no project is ever nested inside this repo.
 | Derived search index (rebuildable, gitignored) | `Index/harness.sqlite` |
 | Index of real project repositories | `Codebase/REGISTRY.md` |
 | Templates for onboarding a new project | `templates/` |
+| Full onboarding procedure for a new project | `ONBOARDING.md` |
 | How to write markdown for agent reading/indexing | `Vault/00-System/Writing Conventions.md` |
 
 ## Provider-agnostic by construction
@@ -41,7 +42,7 @@ every tool without being duplicated:
 | Claude Code (any project) | `~/.claude/CLAUDE.md` is a symlink to `principles/PRINCIPLES.md`, loaded in every session regardless of project |
 | Codex CLI (any project) | `~/.codex/AGENTS.md` is a symlink to the same file — Codex reads this as its global instruction layer before any project-specific `AGENTS.md` |
 | Cursor (any project) | Cursor reads a project's own `AGENTS.md` as a fallback natively; this repo's `.cursorrules` and `.cursor/rules/agents.mdc` point at `AGENTS.md`/`principles/PRINCIPLES.md` explicitly for robustness |
-| A newly onboarded project (any tool) | `templates/AGENTS.md.template` stamps the full content of `principles/PRINCIPLES.md` directly into that project's own `AGENTS.md`, since Cursor/Codex only read whatever `AGENTS.md` exists at that project's own root — see `Scripts/shared/onboard-project/onboard.py`, or just ask an agent for the `/onboard-project` skill |
+| A newly onboarded project (any tool) | `templates/AGENTS.md.template` stamps the full content of `principles/PRINCIPLES.md` directly into that project's own `AGENTS.md`, since Cursor/Codex only read whatever `AGENTS.md` exists at that project's own root — see `ONBOARDING.md` at this repo's root for the full procedure, or just ask an agent for the `/onboard-project` skill |
 
 Only the packaging under `claude/` (subagents, skills, hooks, permissions)
 is genuinely Claude-Code-specific — there is no equivalent mechanism yet in

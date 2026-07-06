@@ -13,6 +13,7 @@ a roster of specialist subagents — all designed to be deployed once
 AGENTS.md            canonical, cross-tool instructions (start here)
 CLAUDE.md             thin Claude Code pointer: @AGENTS.md
 .cursorrules, .cursor/rules/agents.mdc   thin Cursor pointer: see AGENTS.md
+ONBOARDING.md         full procedure for onboarding a new project onto the harness
 principles/           PRINCIPLES.md — the actual rules content, provider-agnostic
 claude/               agents/ skills/ — Claude-Code-specific packaging, symlinked into ~/.claude/
 Vault/                Obsidian vault: memory + documentation
