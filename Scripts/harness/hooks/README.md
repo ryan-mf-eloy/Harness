@@ -36,7 +36,13 @@ The global hooks reference this repo by **absolute path** (they run no
 matter which project you're in, so `${CLAUDE_PROJECT_DIR}` would resolve to
 the wrong place outside this repo). The project-scoped hooks use
 `${CLAUDE_PROJECT_DIR}` correctly, since they only ever fire while a session
-actually has this repo as its working directory.
+actually has this repo as its working directory. The three global config
+files (`~/.claude/settings.json`, `~/.cursor/hooks.json`,
+`~/.codex/hooks.json`) are not hand-maintained — `Scripts/harness/install.py`
+owns them, merging in the correct current absolute path on every run and
+leaving all other content in those files untouched. If this repo moves,
+re-run `python3 Scripts/harness/install.py` rather than hand-editing any of
+the three files; it detects and corrects stale paths automatically.
 
 All of these fail open on malformed/unreadable input (exit 0, no block)
 rather than risk blocking unrelated work on a parsing bug — a hook that
@@ -124,6 +130,12 @@ project-scoped `.claude/settings.json` carries only the RAG guard and the
 index-upsert hook, while the destructive-bash guard and the
 reinforcement/Stop hooks are global in `~/.claude/settings.json` — same
 reasoning carried into the new files rather than collapsed.
+
+All of the global entries in the table above — anywhere this file says a
+script is wired into a `~/.claude/`, `~/.cursor/`, or `~/.codex/` global
+config file — are maintained by `Scripts/harness/install.py`, not by hand.
+Re-run it after moving or recloning this repo; it is safe to run any
+number of times.
 
 **Unresolved, stated rather than guessed around:** it is not confirmed
 whether Codex CLI performs `${CLAUDE_PROJECT_DIR}`-style variable

@@ -32,13 +32,23 @@ templates/            AGENTS.md / CLAUDE.md / PR templates for onboarding a new 
 ## One-time setup
 
 ```bash
-mkdir -p ~/.claude
-mkdir -p ~/.agents
-ln -s "$PWD/claude/agents"          ~/.claude/agents
-ln -s "$PWD/claude/skills"          ~/.claude/skills
-ln -s "$PWD/claude/skills"          ~/.agents/skills       # global reach for Cursor + Codex CLI skill discovery
-ln -s "$PWD/principles/PRINCIPLES.md" ~/.claude/CLAUDE.md   # global reach for Claude Code
-ln -s "$PWD/principles/PRINCIPLES.md" ~/.codex/AGENTS.md    # global reach for Codex CLI
+python3 Scripts/harness/install.py
+```
+
+This creates the global symlinks (`~/.claude/agents`, `~/.claude/skills`,
+`~/.agents/skills`, `~/.cursor/agents`, `~/.codex/agents`,
+`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`) and merges this harness's
+global hook entries into `~/.claude/settings.json`, `~/.cursor/hooks.json`,
+and `~/.codex/hooks.json` — without touching any unrelated content already
+in those files. Unlike a copy-paste `ln -s` snippet, it's idempotent: safe
+to run again after moving, recloning, or reorganizing this repo (it will
+refresh anything now pointing at a stale location) and safe to run
+repeatedly with no effect once everything is already correct. Run
+`python3 Scripts/harness/install.py --dry-run` first if you want to
+preview what it would change before it changes anything.
+
+Also run once, to build the search index:
+```bash
 python3 Scripts/harness/index_rebuild.py
 ```
 
