@@ -10,8 +10,14 @@ Run this checklist before implementing $ARGUMENTS. Do not skip steps because
 the change "looks small" — that judgment is exactly what this checklist
 verifies.
 
-1. **Restate the acceptance criteria** in your own words. If any are
-   unclear, stop and ask before proceeding.
+1. **Restate the acceptance criteria** in your own words. If the request
+   originates from or references a task-tracker item (an epic, ticket,
+   issue, or subtask), first explore its full available context — parent
+   epic, linked/related subtasks, external links, attachments, embedded
+   media — per `principles/PRINCIPLES.md`'s "Full task context before
+   starting" bullet, rather than restating from a partial view. If
+   anything is still unclear or couldn't be fetched/analyzed, stop and ask
+   before proceeding.
 2. **Search for precedent first** — assume this kind of task has probably
    been done before. Query the harness FTS index
    (`python3 <path-to-harness>/Scripts/harness/query.py "<topic>" --source vault`)

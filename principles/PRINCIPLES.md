@@ -60,6 +60,21 @@ changes.
 
 - **Requirements first.** Do not start editing until the request's
   acceptance criteria are explicit. If ambiguous, ask rather than assume.
+- **Full task context before starting.** When a request originates from or
+  references a task-tracker item (an epic, ticket, issue, or subtask),
+  explore its entire available context before treating the acceptance
+  criteria as explicit — the parent epic (for the *why*), linked/related
+  subtasks (for scope boundaries), external links, and attachments
+  (documents, images, video, audio) — using whatever tools are actually
+  connected (the tracker's own MCP/API, WebFetch, Read). A requirement
+  stated only in a screenshot or a linked doc is still a requirement;
+  missing it isn't the same as it being genuinely absent. If something
+  can't actually be fetched or analyzed (e.g., no transcript available for
+  a video), say so explicitly rather than silently proceeding as if it had
+  been reviewed — this is the same "state the gap, don't guess" discipline
+  as "Evidence over assumption" above, applied specifically to task
+  context. See the `pre-change-impact-check` skill for where this fits
+  into the broader pre-implementation checklist.
 - **Reuse over new.** Before writing any new function, class, or utility,
   search the codebase for an existing equivalent. Only write new code when
   nothing equivalent already exists.
