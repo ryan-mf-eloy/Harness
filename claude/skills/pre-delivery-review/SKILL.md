@@ -10,6 +10,10 @@ user-invocable: false
 Run this before saying a non-trivial task is done. Do not skip it because
 the diff looks clean — a clean diff is not the same as a verified result.
 
+For house-style/correctness conformance on a specific diff during a
+`/code-review` pass (narrower than this skill's full "am I actually done"
+self-check), see `review-checklist` instead.
+
 1. **Re-state the original acceptance criteria** and check each one off
    explicitly against what was actually done, not what was intended.
 2. **Check the diff itself** (`git diff`, `git status`) — does it match

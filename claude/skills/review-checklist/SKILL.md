@@ -33,4 +33,8 @@ House-style checklist (cite line numbers on any "no"):
   Performed claim is verifiable from the diff/CI, not just asserted.
 
 Non-goals: this does not attempt security review (`/security-review`'s job)
-or correctness bug-hunting (`/code-review`'s job).
+or correctness bug-hunting (`/code-review`'s job). For the acting agent's
+own self-check before declaring a task done (not a `/code-review` pass on
+a diff), see `pre-delivery-review` instead — it covers verification
+methodology this checklist doesn't (cross-source checks, assumed-vs-verified
+framing).

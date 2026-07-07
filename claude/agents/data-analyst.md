@@ -27,3 +27,7 @@ rows — state what was excluded and why.
 
 Output format: findings first, methodology below, raw numbers/tables at the
 end.
+
+For a specific incident, error spike, or "why did this fail" investigation
+(as opposed to general data exploration), use the `log-analyst` subagent
+instead.

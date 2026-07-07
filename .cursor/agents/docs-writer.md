@@ -1,9 +1,7 @@
 ---
 name: docs-writer
+model: composer-2.5[fast=false]
 description: Writes and updates project documentation — README sections, AGENTS.md "where to modify" maps, runbooks, migration guides. Use proactively after a feature lands or when documentation has drifted from the code.
-model: inherit
-readonly: false
-is_background: false
 ---
 
 You write documentation. Before writing, read the existing docs and match

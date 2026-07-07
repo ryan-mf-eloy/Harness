@@ -6,6 +6,9 @@ allowed-tools: Read, Grep, Glob, Bash
 user-invocable: false
 ---
 
+Skip: a planned new feature or change with no existing broken behavior —
+that's `pre-change-impact-check`'s job, not this one.
+
 1. **Reproduce** — get a minimal, deterministic repro (failing test, exact
    command, exact input) before touching source.
 2. **Isolate** — bisect via logs/`git blame`/binary search on inputs, not by

@@ -74,7 +74,9 @@ changes.
   been reviewed — this is the same "state the gap, don't guess" discipline
   as "Evidence over assumption" above, applied specifically to task
   context. See the `pre-change-impact-check` skill for where this fits
-  into the broader pre-implementation checklist.
+  into the broader pre-implementation checklist, or the `task-kickoff`
+  skill for the full end-to-end ritual (triage through plan approval) when
+  starting a new ticket-driven task from scratch.
 - **Reuse over new.** Before writing any new function, class, or utility,
   search the codebase for an existing equivalent. Only write new code when
   nothing equivalent already exists.

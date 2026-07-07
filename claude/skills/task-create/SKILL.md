@@ -19,9 +19,11 @@ user-invocable: true
    one.
    > Project-specific: confirm the estimation scheme once a tracker is
    > chosen (story points vs. a different estimate style vs. none).
-4. **Labels/Status** — do not invent these. Use the `task-manager-culture`
-   skill to get the real taxonomy once it exists; until then, leave
-   unlabeled and flag to the user that labeling is pending setup.
+4. **Labels/Status** — do not invent these. Pull the actual configured
+   labels/workflow from the tracker itself (its MCP, or a CLI like
+   `gh label list`) before applying any; if the tracker isn't identified or
+   connected yet, leave unlabeled and flag to the user that labeling is
+   pending setup.
 5. If an MCP connector for the chosen tracker is configured, create the task
    directly via that MCP after drafting; otherwise output the draft as
    markdown for manual paste.

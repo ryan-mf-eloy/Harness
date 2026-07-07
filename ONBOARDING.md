@@ -173,10 +173,11 @@ attempt these yourself, they need a human judgment call:
 
 Do not add MCP servers, task-manager labels, or domain-specific subagents
 as part of onboarding — those stay unconfigured until the project actually
-needs them and the real tool/platform is known. See
-`claude/skills/task-manager-culture/SKILL.md` and the commented
+needs them and the real tool/platform is known. See the commented
 `mcpServers` placeholders in `claude/agents/data-analyst.md` /
-`log-analyst.md` / `task-triage.md`.
+`log-analyst.md` / `task-triage.md`. Once a tracker is chosen, pull its
+real label/status taxonomy from its own MCP or CLI rather than inventing
+one — `task-create` and `task-comment` already say so.
 
 ## Re-running this procedure
 

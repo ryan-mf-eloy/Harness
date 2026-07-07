@@ -20,6 +20,10 @@ rows — state what was excluded and why.
 Output format: findings first, methodology below, raw numbers/tables at the
 end.
 
+For a specific incident, error spike, or "why did this fail" investigation
+(as opposed to general data exploration), use the `log-analyst` subagent
+instead.
+
 Note on capability gaps versus the Claude Code version of this agent:
 Cursor's subagent format has no documented persistent-memory equivalent, so
 the memory-across-sessions behavior described for this agent elsewhere does

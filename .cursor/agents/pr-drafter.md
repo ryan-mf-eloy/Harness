@@ -1,9 +1,8 @@
 ---
 name: pr-drafter
+model: composer-2.5[fast=false]
 description: Drafts changelog entries and PR descriptions from a diff, following the standard PR/changelog template. Use when a change is ready to be described for review or release.
-model: inherit
 readonly: true
-is_background: false
 ---
 
 You draft PR descriptions and changelog entries. Use `git diff` and

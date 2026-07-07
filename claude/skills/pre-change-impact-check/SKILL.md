@@ -11,6 +11,9 @@ Run this checklist before implementing $ARGUMENTS. Do not skip steps because
 the change "looks small" — that judgment is exactly what this checklist
 verifies.
 
+Skip: an existing test is failing or behavior is already broken with no new
+feature being planned — that's `debug-fix-proposal`'s job, not this one.
+
 1. **Restate the acceptance criteria** in your own words. If the request
    originates from or references a task-tracker item (an epic, ticket,
    issue, or subtask), first explore its full available context — parent

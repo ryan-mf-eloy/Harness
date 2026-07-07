@@ -12,6 +12,12 @@ infrastructure CLI for $ARGUMENTS. Do not skip steps because the action
 "looks read-only" — step 4 is exactly what makes that determination, don't
 pre-judge it.
 
+Skip: purely local dev state (`docker-compose up`, a local SQLite/Postgres
+file, a Kubernetes context pointed at `minikube`/`kind`/`docker-desktop`) —
+this gates external/hosted environments only. If a `kubectl`/`terraform`
+context name doesn't obviously say "local," confirm it in step 3 rather
+than assuming.
+
 1. **Identify the CLI.** Determine which tool the request actually implies
    (`aws`, `gcloud`/`gsutil`, `az`, `firebase`, `supabase`, `terraform`,
    `kubectl`, or another) — don't guess a provider the request didn't name.
