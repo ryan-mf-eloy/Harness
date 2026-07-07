@@ -9,7 +9,7 @@ created: 2026-07-05
 
 | Slug | Absolute path | Status | Notes |
 |---|---|---|---|
-| _(none yet)_ | | | |
+| paketa | `~/Dropbox/drive_sync/Paketa` | onboarded (memory exception) | pt-BR `AGENTS.md`, stamped principles block, financial-domain gate. Memory/domain knowledge deliberately stays in Paketa's own `paketa-vault/`, not `Vault/40-Memory/paketa/` here — data-residency call for a specific employer's confidential fintech content, see `Vault/00-System/decisions/2026-07-07-paketa-data-residency.md`. No `autoMemoryDirectory` wired here as a result. |
 
 `Status` values: `not onboarded` (repo exists, no AGENTS.md/CLAUDE.md yet) ·
 `onboarded` (canonical file set in place, `autoMemoryDirectory` wired) ·
