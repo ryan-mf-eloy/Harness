@@ -3,6 +3,9 @@ name: log-analyst
 description: Investigates application/server logs to find the cause of an incident, error spike, or anomaly — narrows by time window and correlation ID, and reports a timeline of what happened. Use proactively when asked to check logs, investigate an incident, or find why something failed.
 tools: Read, Grep, Bash
 model: sonnet
+# color: unset deliberately — no natural color association for this
+# subagent's purpose; see debugger.md's red for the pattern this follows
+# when one exists.
 memory: project
 ---
 

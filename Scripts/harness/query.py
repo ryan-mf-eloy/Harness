@@ -6,7 +6,7 @@ with file paths, not full file contents — read the 1-2 files that matter
 with the Read tool afterward, instead of grepping/reading whole folders.
 
 Usage:
-  query.py "<search terms>" [--limit N] [--source vault|rag|project-docs] [--project SLUG]
+  query.py "<search terms>" [--limit N] [--source vault|rag|principles] [--project SLUG]
 """
 from __future__ import annotations
 
@@ -38,7 +38,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("query")
     parser.add_argument("--limit", type=int, default=8)
-    parser.add_argument("--source", choices=["vault", "rag", "principles", "project-docs"])
+    parser.add_argument("--source", choices=["vault", "rag", "principles"])
     parser.add_argument("--project")
     args = parser.parse_args()
 

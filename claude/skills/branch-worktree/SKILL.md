@@ -4,6 +4,7 @@ description: Creates correctly-named branches and isolated git worktrees followi
 when_to_use: Starting a new unit of work that should live on its own branch, or when the user wants to work on something in isolation (parallel task, risky experiment) without disturbing the current working tree.
 argument-hint: "<short-task-description> [ticket-key]"
 allowed-tools: Bash(git branch*), Bash(git worktree*), Bash(git checkout -b*), Bash(git fetch*)
+user-invocable: true
 ---
 
 1. **Naming convention** — `<type>/<ticket-key-if-any>-<slug>`, where type is

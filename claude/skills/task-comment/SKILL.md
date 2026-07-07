@@ -3,6 +3,7 @@ name: Task Comment
 description: Posts a status update, blocker note, or PR-link comment on an existing task/ticket in the project's task manager. Use when asked to update, comment on, or link work to an existing ticket.
 when_to_use: User asks to comment on, update, or post progress to an existing task/ticket — including linking a newly opened PR back to its ticket.
 argument-hint: "<ticket-key> <update-summary>"
+user-invocable: true
 ---
 
 1. **Comment types:**

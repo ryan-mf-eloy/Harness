@@ -4,6 +4,7 @@ description: Structured codebase-exploration and blast-radius checklist to run b
 when_to_use: Before writing code for any task that is not a one-line fix — especially when the change touches a shared module, a public API/interface, database schema, auth, or anything with more than a couple of call sites.
 argument-hint: "[optional: short description of the planned change]"
 allowed-tools: Read, Grep, Glob, Bash(git log*), Bash(git blame*), Bash(git diff*), Bash(python3 */Scripts/harness/query.py*)
+user-invocable: false
 ---
 
 Run this checklist before implementing $ARGUMENTS. Do not skip steps because

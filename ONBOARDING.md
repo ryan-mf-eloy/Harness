@@ -61,10 +61,10 @@ Check whether the given path already exists:
 The templated/existing `AGENTS.md` contains this pair of markers:
 
 ```
-<!-- HARNESS:PRINCIPLES:BEGIN
+<!-- AGENT-PRINCIPLES:BEGIN
      ...explanatory comment text...
      -->
-<!-- HARNESS:PRINCIPLES:END -->
+<!-- AGENT-PRINCIPLES:END -->
 ```
 
 To stamp the current principles in:
@@ -73,16 +73,16 @@ To stamp the current principles in:
    memory — it may have changed since this procedure was last run). Strip
    any leading/trailing blank lines from its content.
 2. In the target `AGENTS.md` text, find the **closing `-->`** of the
-   `HARNESS:PRINCIPLES:BEGIN` comment block (the first `-->` that appears
-   after the `<!-- HARNESS:PRINCIPLES:BEGIN` marker — the marker's own
+   `AGENT-PRINCIPLES:BEGIN` comment block (the first `-->` that appears
+   after the `<!-- AGENT-PRINCIPLES:BEGIN` marker — the marker's own
    explanatory comment spans multiple lines before that `-->`).
-3. Find the `<!-- HARNESS:PRINCIPLES:END -->` marker.
+3. Find the `<!-- AGENT-PRINCIPLES:END -->` marker.
 4. Replace everything between the end of that closing `-->` (step 2) and
    the start of the END marker (step 3) with: a blank line, the full
    `principles/PRINCIPLES.md` content from step 1, then another blank
    line. Leave the BEGIN comment itself and the END marker untouched —
    only the content *between* them changes.
-5. If a target `AGENTS.md` has no `HARNESS:PRINCIPLES:BEGIN`/`:END` markers
+5. If a target `AGENTS.md` has no `AGENT-PRINCIPLES:BEGIN`/`:END` markers
    at all (a hand-written file predating this convention), do not
    fabricate them silently — surface this to the user and ask whether to
    add the markers block from `templates/AGENTS.md.template` before

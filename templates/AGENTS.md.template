@@ -16,14 +16,15 @@
 ### By layer (if this project uses explicit layering)
 <!-- Name this project's actual layers here once chosen — e.g. domain /
      application / infrastructure, or presentation / service / repository.
-     Layers are project-specific (see principles/PRINCIPLES.md's
-     "Dependency direction" and "Layer discipline" bullets) — don't invent
-     names here, record what THIS project actually calls them. Skip this
-     whole subsection if the project doesn't use explicit layers (e.g. a
-     small script or single CRUD app) — imposing layer names it doesn't
-     need would itself be the over-engineering the principles warn
-     against. Once chosen, this is an architectural decision worth an ADR
-     (see doc-create skill / Vault/00-System/Templates/Decision.md). -->
+     Layers are project-specific (see this file's own "Dependency
+     direction" and "Layer discipline" bullets further down, under
+     Engineering Principles) — don't invent names here, record what THIS
+     project actually calls them. Skip this whole subsection if the
+     project doesn't use explicit layers (e.g. a small script or single
+     CRUD app) — imposing layer names it doesn't need would itself be the
+     over-engineering the principles warn against. Once chosen, this is an
+     architectural decision worth an ADR (see the "Record decisions"
+     bullet under Engineering Principles below for the exact structure). -->
 - `<layer name>` — <!-- what belongs here, what does NOT belong here -->
 - `<layer name>` — <!-- what belongs here, what does NOT belong here -->
 - Bounded contexts (if applicable): <!-- context name -> module root,
@@ -74,30 +75,34 @@ without asking first.
 
 ## Engineering Principles
 
-<!-- HARNESS:PRINCIPLES:BEGIN
-     The block below is stamped in verbatim from the Harness repo's
-     principles/PRINCIPLES.md by following ONBOARDING.md's Step 3 stamping
-     procedure. Every tool reading THIS project's own AGENTS.md gets the
-     full content directly — Cursor and Codex CLI don't follow
-     cross-directory imports, so the content has to physically live here,
-     not just be linked to. If the Harness's canonical principles change,
-     re-run ONBOARDING.md's Step 3 to refresh this block; don't hand-edit
-     it here, edit the source in the Harness repo instead. -->
-<!-- HARNESS:PRINCIPLES:END -->
+<!-- AGENT-PRINCIPLES:BEGIN
+     The block below is a full copy of a shared engineering-principles
+     document, stamped in verbatim so every tool reading THIS file gets
+     the complete content directly with no cross-file lookup required —
+     several agent tools don't follow cross-directory imports, so this has
+     to physically live here. This project owns this copy outright — edit
+     it in place like any other part of this file. These markers exist
+     only so a future re-stamping pass (if this project's source of these
+     principles is ever revisited) can find the block programmatically;
+     they carry no meaning beyond that and can be deleted once this
+     project's principles have diverged enough that re-stamping no longer
+     makes sense. -->
+<!-- AGENT-PRINCIPLES:END -->
 
 ## Task Manager & Specialist Agents
 
-- Task manager labels/statuses: not yet configured for this project — see
-  the Harness's `claude/skills/task-manager-culture/SKILL.md` for the
-  fill-in procedure once a tracker is chosen.
+- Task manager labels/statuses: not yet configured for this project — fill
+  this section in with the label/status taxonomy for whichever tracker
+  (Jira/Linear/GitHub Issues/other) this project actually uses, once one
+  is chosen and connected.
 - Claude Code users additionally get a roster of specialist subagents
   (risk-analyst, pr-drafter, data-analyst, log-analyst, docs-writer,
-  task-triage, debugger) via `~/.claude/agents/` — this is Claude-Code-
-  specific packaging; the underlying procedures are plain markdown any
-  tool can be pointed at directly if needed (see the Harness's `claude/`
-  folder).
-- Secrets-by-label convention: never a raw value in this repo. See the
-  Harness's `Secrets/manifest.yaml` and `Scripts/harness/secure/`.
+  task-triage, debugger) via `~/.claude/agents/` if configured on this
+  machine — the underlying procedures are plain markdown any tool can be
+  pointed at directly if this project keeps its own copy of them.
+- Secrets-by-label convention: never a raw value in this repo. Reference
+  secrets only by label, through this project's own secret-management
+  tooling — record where that lives and how to invoke it once it exists.
 
 Project-specific rules above always take precedence over the general
 principles when they conflict.

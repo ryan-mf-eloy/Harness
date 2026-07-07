@@ -4,6 +4,7 @@ description: Multi-source review before declaring a non-trivial task finished â€
 when_to_use: Before considering a non-trivial implementation, investigation, or multi-step task finished â€” especially after touching more than one file, after a debugging session, or before reporting a conclusion that a decision will be based on.
 argument-hint: "[optional: what you're about to declare done]"
 allowed-tools: Read, Grep, Glob, Bash(git diff*), Bash(git log*), Bash(git status*), Bash(python3 */Scripts/harness/query.py*)
+user-invocable: false
 ---
 
 Run this before saying a non-trivial task is done. Do not skip it because

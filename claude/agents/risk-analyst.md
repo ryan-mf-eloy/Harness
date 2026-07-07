@@ -4,6 +4,9 @@ description: Analyzes the blast radius and risk profile of a proposed change bef
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
 model: sonnet
+# color: unset deliberately — no natural color association for this
+# subagent's purpose; see debugger.md's red for the pattern this follows
+# when one exists.
 memory: user
 ---
 

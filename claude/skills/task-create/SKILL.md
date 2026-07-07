@@ -3,6 +3,7 @@ name: Task Create
 description: Drafts a well-formed task/ticket (title, description, acceptance criteria, size estimate) ready to paste into or create directly in the project's task manager. Use when asked to create a task, ticket, or issue for new work.
 when_to_use: User asks to create a task/ticket/issue, or a piece of work needs to be tracked before or instead of being implemented immediately.
 argument-hint: "<short description of the work>"
+user-invocable: true
 ---
 
 1. **Title** — imperative, under ~70 characters, no ticket-key prefix (the

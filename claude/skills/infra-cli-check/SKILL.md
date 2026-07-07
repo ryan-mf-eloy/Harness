@@ -4,6 +4,7 @@ description: Verifies CLI availability and the correct profile/account/project b
 when_to_use: Before invoking any CLI that reads or changes state in an external environment (cloud account, hosted database, Kubernetes cluster) — especially when the request names a specific environment (prod, staging, a named account/project).
 argument-hint: "[optional: environment name and intended action]"
 allowed-tools: Bash(which*), Bash(aws sts*), Bash(aws configure list*), Bash(gcloud config*), Bash(az account*), Bash(firebase projects:list*), Bash(firebase use*), Bash(supabase projects list*), Bash(supabase status*), Bash(terraform workspace*), Bash(kubectl config*), Bash(*/Scripts/harness/secure/*_readonly.sh*), Read, Grep, Glob
+user-invocable: false
 ---
 
 Run this checklist before any command that talks to an external

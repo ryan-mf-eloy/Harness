@@ -37,24 +37,24 @@ changes.
   ambiguity, using the same low/medium/high tiering as
   `pre-change-impact-check`: a one-line fix doesn't need the same
   investigation as a schema migration. Exhaustive research on every
-  trivial action defeats this harness's own token-efficiency goal — that
-  tradeoff is deliberate, not an oversight.
+  trivial action defeats the point of triaging effort by risk in the
+  first place — that tradeoff is deliberate, not an oversight.
 - **Precedent before invention.** Assume this kind of task has probably
-  been done before in this workspace. Search first — the FTS index
-  (`Scripts/harness/query.py`), `Vault/20-Knowledge/`, the project's own
-  docs — and follow the documented way of doing it if one exists, instead
-  of re-deriving from scratch. If it's genuinely new, solve it following
-  the standing rules here, then document the approach in
-  `Vault/20-Knowledge/` so the next agent finds it through the same search
-  instead of re-solving it from nothing.
+  been done before in this workspace. Search first — this project's own
+  search/index tooling if it has one, its knowledge base or internal docs,
+  its own past decisions/notes — and follow the documented way of doing it
+  if one exists, instead of re-deriving from scratch. If it's genuinely
+  new, solve it following the standing rules here, then document the
+  approach somewhere the next person/agent will find it through that same
+  search, instead of re-solving it from nothing.
 - **Review before declaring done.** Before considering a non-trivial task
   finished, check it against every relevant source actually available —
   not just the diff you wrote. See the `pre-delivery-review` skill.
 - **Continuous hygiene.** Keep memory and notes current, deduplicated, and
   organized as an ongoing habit, not an occasional cleanup — update a
-  stale note instead of leaving a contradicting new one beside it, and
-  prefer the existing `consolidate-memory` skill over letting memory grow
-  unchecked.
+  stale note instead of leaving a contradicting new one beside it, and run
+  a periodic consolidation pass (merge duplicates, fix stale facts, prune
+  the index) rather than letting memory grow unchecked indefinitely.
 
 ## Development culture
 
@@ -141,9 +141,11 @@ changes.
   module. This calibration is not license to skip structure a complex
   domain actually needs — an **anemic domain model** (entities as pure
   data-bags, all logic in a generic `*Service` class) is the anti-pattern
-  this bullet prevents, not a safe default. Full unpacking, worked
-  examples, and context-mapping patterns:
-  `Vault/20-Knowledge/Playbooks/domain-driven-design-and-layering.md`.
+  this bullet prevents, not a safe default. If this project keeps a
+  knowledge base or playbooks folder, a fuller unpacking with worked
+  examples and context-mapping patterns is worth recording there once DDD
+  is actually in active use, rather than re-explaining it inline here
+  every time.
 - **Surgical diffs.** Prefer the smallest change that satisfies the
   acceptance criteria. No drive-by refactors bundled into an unrelated
   change. No renaming/moving files unless that's the explicit ask.
@@ -213,9 +215,8 @@ changes.
   — drop filler words, hedging, and pleasantries where dropping them costs
   nothing in clarity. The community `caveman` skill
   (github.com/JuliusBrussee/caveman, an open Agent-Skills-format skill
-  reachable the same way as this harness's own — see `AGENTS.md`'s
-  "Provider-agnostic by construction" section — via `.agents/skills`) is
-  the concrete mechanism recommended here: install once, then toggle per
+  reachable via the same `.agents/skills` discovery path most tools scan)
+  is the concrete mechanism recommended here: install once, then toggle per
   session with `/caveman [lite|full|ultra]`, and "stop caveman"/"normal
   mode" to turn it back off. Never let this compress away the clarity a
   destructive-action confirmation, a security warning, or a multi-step
@@ -224,11 +225,12 @@ changes.
 
   This applies **only** to the live chat/conversational reply stream —
   nothing else, ever. Never compressed, no exceptions: documentation
-  (READMEs, skill/subagent files, ADRs, Vault notes, PR descriptions,
-  commit messages), memory (Claude Code's own auto-memory, `MEMORY.md`,
-  anything under `Vault/40-Memory/`), this harness's own operational
-  content (`principles/PRINCIPLES.md`, `AGENTS.md`, skills, subagents,
-  hooks, templates), code/inline comments, comments posted to a
+  (READMEs, skill/subagent files, ADRs, internal knowledge-base notes, PR
+  descriptions, commit messages), memory (an assistant's own auto-memory,
+  a memory index file, anything under a dedicated memory folder), this
+  project's own operational/tooling content (engineering-principles docs,
+  `AGENTS.md`, skills, subagents, hooks, templates), code/inline comments,
+  comments posted to a
   ticket/PR/task tracker, emails, and any other action visible outside
   this conversation (a chat message to a third party, a calendar invite,
   a comment on an external system) — including never running the skill's
@@ -239,18 +241,20 @@ changes.
   fragment that's unambiguous mid-conversation can become a genuine
   misread later, or just read as unprofessional to someone outside this
   session, with no one left to ask what it meant.
-- **Internal vocabulary stays internal.** Harness-specific terms ("the
-  Harness", a folder name like `RAG/` or `Vault/`, a specific skill or
-  subagent name) and this machine's absolute file paths are operational
-  vocabulary for your own reasoning — not for a PR description, commit
-  message, code comment, task-tracker ticket, or any business/domain
-  document a teammate, client, or reviewer without this context will read.
-  Translate to what was actually done and verified, not which internal
-  folder or skill did it. The same applies to verbatim memory/Vault note
-  content — summarize the relevant fact, don't paste internal notes into
-  external-facing output. This doesn't apply to a project's own
-  `AGENTS.md`/`CLAUDE.md` — referencing the harness there is the intended
-  integration point, not a leak.
+- **Internal vocabulary stays internal.** Your own agent-tooling
+  vocabulary (an internal folder name for notes/knowledge/memory, a
+  specific skill or subagent name, this machine's absolute file paths) is
+  operational vocabulary for your own reasoning — not for a PR
+  description, commit message, code comment, task-tracker ticket, or any
+  business/domain document a teammate, client, or reviewer without this
+  context will read. Translate to what was actually done and verified,
+  not which internal folder or skill did it. The same applies to verbatim
+  memory/notes content — summarize the relevant fact, don't paste internal
+  notes into external-facing output. This applies everywhere, including a
+  project's own `AGENTS.md`/`CLAUDE.md` — those files are read by every
+  tool and every future contributor on that project, not just you, so they
+  get the same translation-to-plain-language treatment as any other
+  document outside your own reasoning.
 
 ## Non-negotiable safety rules
 

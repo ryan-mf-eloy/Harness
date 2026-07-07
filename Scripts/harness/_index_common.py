@@ -19,7 +19,7 @@ SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS documents (
     id          INTEGER PRIMARY KEY,
     path        TEXT NOT NULL UNIQUE,
-    source      TEXT NOT NULL,          -- 'vault' | 'rag' | 'principles' | 'project-docs'
+    source      TEXT NOT NULL,          -- 'vault' | 'rag' | 'principles'
     project     TEXT,
     title       TEXT NOT NULL,
     tags        TEXT NOT NULL DEFAULT '',

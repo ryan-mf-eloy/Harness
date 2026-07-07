@@ -4,6 +4,7 @@ description: Wires a new or existing project onto the Harness conventions — cr
 when_to_use: User says things like "let's start a new project", "iniciar um projeto", "onboard this repo onto the harness", or asks what to do to begin using the harness for a project.
 argument-hint: "<project-slug> <absolute-path> [project overview]"
 allowed-tools: Bash(git init*), Bash(ls*), Bash(readlink*), Bash(dirname*), Read, Write, Edit
+user-invocable: true
 ---
 
 Find `ONBOARDING.md` at the harness repo root — this skill may run from

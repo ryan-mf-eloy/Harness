@@ -3,6 +3,9 @@ name: data-analyst
 description: Analyzes data — SQL queries, log-derived metrics, spreadsheet/CSV exploration — and summarizes findings with the actual numbers, not vibes. Use proactively for data analysis tasks, ad hoc queries, or turning raw data into a decision-ready summary.
 tools: Bash, Read, Grep, Glob
 model: sonnet
+# color: unset deliberately — no natural color association for this
+# subagent's purpose; see debugger.md's red for the pattern this follows
+# when one exists.
 memory: project
 # mcpServers: a project-scoped override of this agent (in that project's own
 #   .claude/agents/data-analyst.md) should add an inline mcpServers entry

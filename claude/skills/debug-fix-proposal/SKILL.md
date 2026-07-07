@@ -3,6 +3,7 @@ name: Debug & Fix Proposal
 description: Structured root-cause investigation and minimal-fix proposal procedure for a bug, failing test, or unexpected behavior — reproduces the issue, isolates root cause, proposes the smallest fix, and states confidence level before applying anything.
 when_to_use: A test is failing, an error is reported, or behavior doesn't match the spec/acceptance criteria, and the cause is not yet understood.
 allowed-tools: Read, Grep, Glob, Bash
+user-invocable: false
 ---
 
 1. **Reproduce** — get a minimal, deterministic repro (failing test, exact

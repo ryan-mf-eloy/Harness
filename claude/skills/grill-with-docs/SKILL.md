@@ -4,6 +4,7 @@ description: Interrogates the project's documentation/knowledge base to answer a
 when_to_use: A question is asked that existing documentation should answer, or the user wants to verify docs are internally consistent / not stale before relying on them.
 argument-hint: "<question>"
 allowed-tools: Read, Grep, Glob, WebFetch
+user-invocable: true
 ---
 
 1. **Locate candidate sources** — repo-local `docs/`, README, ADRs, the

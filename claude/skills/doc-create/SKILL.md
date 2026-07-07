@@ -3,6 +3,7 @@ name: Document Create
 description: Drafts technical documentation (README, design doc, runbook, ADR) following consistent structure and tone conventions. For Word/PDF/Slides/Excel output specifically, defer to the bundled docx/pdf/pptx/xlsx skills for file mechanics while still using these content conventions.
 when_to_use: Asked to write or update a README, design doc, runbook, ADR, or other technical documentation.
 argument-hint: "<doc-type> <topic>"
+user-invocable: true
 ---
 
 Doc-type skeletons (structure only — fill with real content, don't pad):
