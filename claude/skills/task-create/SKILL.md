@@ -26,5 +26,5 @@ user-invocable: true
    directly via that MCP after drafting; otherwise output the draft as
    markdown for manual paste.
 6. Before creating: the ticket is read by teammates — check it against the
-   "Internal vocabulary stays internal" principle (no harness/workspace
+   "Internal vocabulary stays internal" principle (no internal-tooling
    jargon, no internal file paths).

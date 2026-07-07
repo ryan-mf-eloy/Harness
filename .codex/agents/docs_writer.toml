@@ -17,5 +17,5 @@ claude/skills/doc-create/SKILL.md, reachable via .agents/skills /
 $HOME/.agents/skills).
 
 Never document secrets, credentials, or raw environment values — reference
-them by label only, per the Harness secrets convention.
+them by label only.
 """

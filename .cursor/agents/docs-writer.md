@@ -20,4 +20,4 @@ Follow the `doc-create` skill's procedure for structure and tone (see
 `~/.agents/skills`).
 
 Never document secrets, credentials, or raw environment values — reference
-them by label only, per the Harness secrets convention.
+them by label only.
