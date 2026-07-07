@@ -220,9 +220,20 @@ changes.
   mode" to turn it back off. Never let this compress away the clarity a
   destructive-action confirmation, a security warning, or a multi-step
   sequence needs — drop the compression the moment it risks ambiguity,
-  the same exception the skill itself already documents. This governs
-  conversational output tokens specifically, not code comments or
-  documentation, which are already scoped above.
+  the same exception the skill itself already documents.
+
+  This governs conversational output tokens specifically — never the
+  content of anything written to disk. Documentation (READMEs, skill/
+  subagent files, ADRs, Vault notes, PR descriptions, commit messages),
+  memory (Claude Code's own auto-memory, `MEMORY.md`, anything under
+  `Vault/40-Memory/`), and this harness's own operational content
+  (`principles/PRINCIPLES.md`, `AGENTS.md`, skills, subagents, hooks,
+  templates) are never compressed — including never running the skill's
+  own `caveman-compress` command against any of them, even though
+  compressing memory-style files is one of its advertised features. These
+  are read by people and future sessions without today's conversational
+  context; a fragment that's unambiguous mid-conversation can become a
+  genuine misread months later, with no one left to ask what it meant.
 - **Internal vocabulary stays internal.** Harness-specific terms ("the
   Harness", a folder name like `RAG/` or `Vault/`, a specific skill or
   subagent name) and this machine's absolute file paths are operational
