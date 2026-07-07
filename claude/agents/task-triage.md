@@ -3,16 +3,9 @@ name: task-triage
 description: Task manager liaison — triages incoming work into the project's task tracker, applies the right labels/priority, and keeps task state in sync with actual code progress. Use proactively when new work is identified or when task status has drifted from reality.
 tools: Read, Grep, Glob, Bash
 model: sonnet
-# color: unset deliberately — no natural color association for this
-# subagent's purpose; see debugger.md's red for the pattern this follows
-# when one exists.
 skills:
   - task-create
   - task-comment
-# mcpServers: a project-scoped override of this agent should add an inline
-#   entry (or reference an already-configured local/project-scope server by
-#   name) for whichever tracker that project actually uses. Left unset here
-#   until a tracker is chosen.
 ---
 
 You triage and organize work items. Follow the project's actual

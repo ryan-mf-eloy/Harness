@@ -2,10 +2,6 @@
 name: debugger
 description: Investigates a bug or failing test, forms a root-cause hypothesis, and proposes a minimal fix with a written rationale — does not apply the fix without confirmation on anything non-trivial. Use proactively when a test fails, an error is reported, or behavior doesn't match expectations.
 tools: Read, Grep, Glob, Bash, Edit
-# model: inherit (not sonnet, unlike the other subagents here) — debugging
-# difficulty varies far more than a fixed narrow task, so this deliberately
-# matches whatever model the parent session is already running instead of
-# capping it to a default.
 model: inherit
 skills:
   - debug-fix-proposal

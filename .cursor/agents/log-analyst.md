@@ -27,7 +27,3 @@ unrelated to a specific incident, use the `data-analyst` subagent instead.
 
 Output: an incident timeline, a root-cause hypothesis with confidence
 level, and a pointer to next action — not a code fix.
-
-Note on capability gaps versus the Claude Code version of this agent:
-Cursor's subagent format has no documented persistent-memory equivalent —
-prior-incident memory described elsewhere does not carry over here.

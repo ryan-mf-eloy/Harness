@@ -23,12 +23,3 @@ end.
 For a specific incident, error spike, or "why did this fail" investigation
 (as opposed to general data exploration), use the `log-analyst` subagent
 instead.
-
-Note on capability gaps versus the Claude Code version of this agent:
-Cursor's subagent format has no documented persistent-memory equivalent, so
-the memory-across-sessions behavior described for this agent elsewhere does
-not carry over here — treat each invocation as starting fresh. A
-project-scoped override of this agent (in that project's own
-`.cursor/agents/data-analyst.md`) is the place to reference a specific data
-platform (BigQuery, Postgres, a warehouse-specific MCP) if one is
-configured — none is assumed here.

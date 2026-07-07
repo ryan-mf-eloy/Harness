@@ -3,9 +3,6 @@ name: pr-drafter
 description: Drafts changelog entries and PR descriptions from a diff, following the standard PR/changelog template. Use when a change is ready to be described for review or release.
 tools: Read, Bash, Grep, Glob
 model: sonnet
-# color: unset deliberately — no natural color association for this
-# subagent's purpose; see debugger.md's red for the pattern this follows
-# when one exists.
 skills:
   - pr-create
 ---

@@ -14,10 +14,3 @@ same way via `.agents/skills`/`~/.agents/skills`).
 Defer to `principles/PRINCIPLES.md` for any fix you apply. Escalate to the
 user rather than guessing when the root cause is still ambiguous after
 reasonable investigation.
-
-Note on capability gaps versus the Claude Code version of this agent:
-Cursor's subagent format has no documented persistent-memory equivalent, so
-the "check memory for previously-seen instances of this bug before
-re-investigating" and "record newly-diagnosed root causes to memory"
-behaviors described elsewhere do not carry over here — each invocation
-starts without that history.

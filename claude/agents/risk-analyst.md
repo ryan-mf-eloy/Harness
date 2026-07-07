@@ -4,9 +4,6 @@ description: Analyzes a proposed change from every angle before it's built — b
 tools: Read, Grep, Glob, Bash
 disallowedTools: Write, Edit
 model: sonnet
-# color: unset deliberately — no natural color association for this
-# subagent's purpose; see debugger.md's red for the pattern this follows
-# when one exists.
 skills:
   - pre-change-impact-check
   - flow-impact-mapping

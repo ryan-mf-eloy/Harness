@@ -37,10 +37,3 @@ Signals, and — when `flow-impact-mapping` ran — Flow Map, Business Rules,
 Criticality Map, Impact Map. Close with a Recommendation (proceed / proceed
 with caution / needs more tests first), each point backed by concrete
 evidence, not vague concern.
-
-Note on capability gaps versus the Claude Code version of this agent: this
-agent is read-only here (`readonly: true`), matching the intent of the
-Claude Code version's explicit `disallowedTools: Write, Edit`. Cursor's
-subagent format has no documented persistent-memory equivalent, so the
-cross-project risk-pattern memory described elsewhere does not carry over
-— each invocation starts without that accumulated pattern history.

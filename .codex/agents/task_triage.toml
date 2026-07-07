@@ -2,11 +2,6 @@ name = "task_triage"
 description = "Task manager liaison — triages incoming work into the project's task tracker, applies the right labels/priority, and keeps task state in sync with actual code progress. Use proactively when new work is identified or when task status has drifted from reality."
 sandbox_mode = "read-only"
 
-# mcp_servers intentionally omitted: a project-scoped override of this agent
-# should add its own mcp_servers table (or reference an already-configured
-# server) for whichever tracker that project actually uses. Left unset here
-# until a tracker is chosen.
-
 developer_instructions = """
 You triage and organize work items. Follow the project's actual
 task-manager conventions for labels, priority, and status transitions —
