@@ -105,12 +105,28 @@ FILE_SYMLINKS: list[tuple[Path, Path]] = [
 
 GLOBAL_SCRIPTS = {
     "block_destructive_bash.py",
+    "guard_infra_mutation.py",
+    "guard_remote_automation.py",
     "reinforce_principles.py",
     "reinforce_principles_cursor.py",
     "reinforce_principles_codex.py",
     "check_tests_and_revalidation.py",
     "check_tests_and_revalidation_codex.py",
 }
+
+# Matcher string for infra-mutating MCP tool calls (Cloudflare/Supabase/Vercel)
+# — must stay in sync with guard_infra_mutation.py's MCP_INFRA_MUTATION_RE.
+# Only confirmed to work as a PreToolUse matcher on Claude Code; Cursor's and
+# Codex's matcher engines are not confirmed to match arbitrary MCP tool-name
+# regexes the same way, so this is wired only into CLAUDE_SETTINGS_HOOKS
+# below — a stated, not guessed-around, asymmetry (see hooks/README.md).
+MCP_INFRA_MUTATION_MATCHER = (
+    r"mcp__.*__(d1_database_(create|delete)|kv_namespace_(create|delete|update)"
+    r"|r2_bucket_(create|delete)|hyperdrive_config_(create|edit|delete)"
+    r"|apply_migration|execute_sql|deploy_edge_function|create_branch"
+    r"|delete_branch|merge_branch|reset_branch|rebase_branch|create_project"
+    r"|pause_project|restore_project|deploy_to_vercel)"
+)
 
 PROJECT_SCOPED_SCRIPTS = {
     # Wired only into this repo's own .claude/settings.json / .cursor/hooks.json
@@ -141,6 +157,9 @@ CLAUDE_SETTINGS_HOOKS: dict[str, list[dict[str, Any]]] = {
     "PreToolUse": [
         {"matcher": "Bash", "script": "block_destructive_bash.py"},
         {"matcher": "Edit|Write|MultiEdit", "script": "reinforce_principles.py"},
+        {"matcher": "Bash", "script": "guard_infra_mutation.py"},
+        {"matcher": MCP_INFRA_MUTATION_MATCHER, "script": "guard_infra_mutation.py"},
+        {"matcher": "Write|Edit|MultiEdit|NotebookEdit", "script": "guard_remote_automation.py"},
     ],
     "Stop": [
         {"matcher": None, "script": "check_tests_and_revalidation.py"},
@@ -223,6 +242,8 @@ def merge_claude_settings(path: Path, dry_run: bool) -> list[str]:
 CURSOR_HOOKS: dict[str, list[dict[str, Any]]] = {
     "preToolUse": [
         {"matcher": "Shell", "script": "block_destructive_bash.py"},
+        {"matcher": "Shell", "script": "guard_infra_mutation.py"},
+        {"matcher": "Shell", "script": "guard_remote_automation.py"},
     ],
     "sessionStart": [
         {"matcher": None, "script": "reinforce_principles_cursor.py"},
@@ -303,6 +324,8 @@ CODEX_HOOKS: dict[str, list[dict[str, Any]]] = {
     "PreToolUse": [
         {"matcher": "Bash", "script": "block_destructive_bash.py"},
         {"matcher": "apply_patch|Edit|Write", "script": "reinforce_principles_codex.py"},
+        {"matcher": "Bash", "script": "guard_infra_mutation.py"},
+        {"matcher": "apply_patch|Edit|Write|Bash", "script": "guard_remote_automation.py"},
     ],
     "Stop": [
         {"matcher": None, "script": "check_tests_and_revalidation_codex.py"},

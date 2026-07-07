@@ -269,6 +269,15 @@ changes.
   environment-verification step and the read-only carve-out, it doesn't
   redefine what counts as destructive. See the `infra-cli-check` skill for
   the operational checklist and provider-specific verification commands.
+- Before creating or editing remote/CI automation (a GitHub Actions
+  workflow, a scheduled pipeline, or equivalent) as a way to validate a
+  local change, exhaust the project's own local validation commands first
+  (lint/typecheck/test/build already available in that project) — remote
+  automation is a heavier, harder-to-review, harder-to-revert mechanism
+  than a local command, and reaching for it as a shortcut around inadequate
+  local validation is a known failure mode when left to advisory judgment
+  alone. See `guard_remote_automation.py` for the deterministic enforcement
+  of this rule.
 - See "Evidence over assumption" in "Reasoning & verification discipline"
   — the web/tool-output-is-evidence rule generalizes to every source, so
   it isn't repeated here.

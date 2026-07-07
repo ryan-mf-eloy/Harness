@@ -8,6 +8,8 @@ whether the check depends on this repo's own files:
 | Script | Event | Matcher | Wired in | Purpose |
 |---|---|---|---|---|
 | `block_destructive_bash.py` | `PreToolUse` | `Bash` (Claude Code/Codex CLI), `Shell` (Cursor) | `~/.claude/settings.json`, `~/.cursor/hooks.json`, `~/.codex/hooks.json` — all global, no dependency on any specific project's files | Deny known-destructive command patterns (force-push to main, `reset --hard`, `rm -rf` on root/home, `--no-verify`) — redundant with `permissions.deny` on purpose, defense in depth |
+| `guard_infra_mutation.py` | `PreToolUse` | `Bash` (Claude Code/Codex CLI), `Shell` (Cursor), plus a direct MCP-tool-name matcher on Claude Code only (see "Cross-provider" below) | `~/.claude/settings.json`, `~/.cursor/hooks.json`, `~/.codex/hooks.json` — all global | Deny cloud/IaC/Kubernetes/PaaS-deploy command patterns and infra-mutating MCP tool calls (Cloudflare/Supabase/Vercel) — broader than `block_destructive_bash.py`'s git/filesystem scope; complements the advisory-only `infra-cli-check` skill, which still owns profile/account verification and mutation approval since a hook can't do either |
+| `guard_remote_automation.py` | `PreToolUse` | `Write\|Edit\|MultiEdit\|NotebookEdit` (Claude Code), `apply_patch\|Edit\|Write\|Bash` (Codex CLI), `Shell` (Cursor, write-intent-gated) | `~/.claude/settings.json`, `~/.cursor/hooks.json`, `~/.codex/hooks.json` — all global | Deny creating/editing `.github/workflows/*.yml` — forces exhausting local validation before reaching for remote CI automation as a shortcut |
 | `check_tests_and_revalidation.py` | `Stop` | — | `~/.claude/settings.json` (global) | Block ending the turn if files changed but no test command was observed, unless an explicit `<no-tests-required: ...>` marker is present |
 | `check_tests_and_revalidation_codex.py` | `Stop` | — | `~/.codex/hooks.json` (global) | Same as above, for Codex CLI — shares detection logic with the Claude Code variant via `_revalidation_common.py` |
 | `reinforce_principles.py` | `SessionStart` | — | `~/.claude/settings.json` (global) | Once per session/resume, points at the mechanism (principles auto-loaded + per-edit checklist) — does not repeat `principles/PRINCIPLES.md` content, since that's already loaded separately and repeating it would just waste tokens |
@@ -122,6 +124,8 @@ identical on every tool.
 |---|---|---|
 | `guard_rag_immutable.py` | Yes — project-scoped, only meaningful for this repo's own `RAG/` | No |
 | `block_destructive_bash.py` | No | Yes — global/no-project-dependency, mirrors its `~/.claude/settings.json` wiring |
+| `guard_infra_mutation.py` | No | Yes — global; Claude Code only gets an additional direct MCP-tool-name matcher (`MCP_INFRA_MUTATION_MATCHER` in `install.py`) since Cursor's and Codex's matcher engines are not confirmed to match arbitrary MCP tool-name regexes the same way — a stated, not guessed-around, asymmetry; both still get full Bash/Shell coverage |
+| `guard_remote_automation.py` | No | Yes — global, same matcher-per-tool shape as `reinforce_principles_codex.py`/`block_destructive_bash.py` |
 | `reinforce_principles_codex.py` | No | Yes (Codex only; already covered for Cursor by `reinforce_principles_cursor.py`) |
 | `check_tests_and_revalidation_codex.py` | No | Yes (Codex only; no Cursor variant exists — out of scope for this pass) |
 
@@ -204,8 +208,10 @@ its analogous Cursor gap.
 
 ## Known limitation of the regex-based Bash guards
 
-`block_destructive_bash.py` and `guard_rag_immutable.py`'s Bash branch both
-pattern-match the raw command string. This was confirmed, live, during
+`block_destructive_bash.py`, `guard_rag_immutable.py`'s Bash branch,
+`guard_infra_mutation.py`, and `guard_remote_automation.py` all
+pattern-match the raw command string (or, for the latter two, a candidate
+file path / patch body). This was confirmed, live, during
 implementation: a `python3 -c "..."` command whose inline script merely
 *mentioned* the words "rm", "mv", "truncate", "shred" as documentation prose
 (not as an actual invocation) was incorrectly blocked, because the regex

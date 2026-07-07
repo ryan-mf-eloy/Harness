@@ -76,13 +76,13 @@ without asking first.
 
 <!-- HARNESS:PRINCIPLES:BEGIN
      The block below is stamped in verbatim from the Harness repo's
-     principles/PRINCIPLES.md by Scripts/shared/onboard-project.sh. Every
-     tool reading THIS project's own AGENTS.md gets the full content
-     directly — Cursor and Codex CLI don't follow cross-directory imports,
-     so the content has to physically live here, not just be linked to.
-     If the Harness's canonical principles change, re-run the onboarding
-     script to refresh this block; don't hand-edit it here, edit the
-     source in the Harness repo instead. -->
+     principles/PRINCIPLES.md by following ONBOARDING.md's Step 3 stamping
+     procedure. Every tool reading THIS project's own AGENTS.md gets the
+     full content directly — Cursor and Codex CLI don't follow
+     cross-directory imports, so the content has to physically live here,
+     not just be linked to. If the Harness's canonical principles change,
+     re-run ONBOARDING.md's Step 3 to refresh this block; don't hand-edit
+     it here, edit the source in the Harness repo instead. -->
 <!-- HARNESS:PRINCIPLES:END -->
 
 ## Task Manager & Specialist Agents
