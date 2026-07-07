@@ -209,6 +209,20 @@ changes.
   **what changed**, then anything the user needs to do next.
 - No emojis unless explicitly requested. State intent plainly rather than
   narrating each step.
+- **Token economy in conversation.** Default to terse, high-signal replies
+  — drop filler words, hedging, and pleasantries where dropping them costs
+  nothing in clarity. The community `caveman` skill
+  (github.com/JuliusBrussee/caveman, an open Agent-Skills-format skill
+  reachable the same way as this harness's own — see `AGENTS.md`'s
+  "Provider-agnostic by construction" section — via `.agents/skills`) is
+  the concrete mechanism recommended here: install once, then toggle per
+  session with `/caveman [lite|full|ultra]`, and "stop caveman"/"normal
+  mode" to turn it back off. Never let this compress away the clarity a
+  destructive-action confirmation, a security warning, or a multi-step
+  sequence needs — drop the compression the moment it risks ambiguity,
+  the same exception the skill itself already documents. This governs
+  conversational output tokens specifically, not code comments or
+  documentation, which are already scoped above.
 - **Internal vocabulary stays internal.** Harness-specific terms ("the
   Harness", a folder name like `RAG/` or `Vault/`, a specific skill or
   subagent name) and this machine's absolute file paths are operational
