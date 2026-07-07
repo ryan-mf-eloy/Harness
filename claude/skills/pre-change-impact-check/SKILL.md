@@ -51,4 +51,9 @@ feature being planned — that's `debug-fix-proposal`'s job, not this one.
 7. Only after steps 1–6, produce a short implementation plan and proceed.
    If step 2 found no precedent and this turns out to be genuinely novel,
    remember to document it afterward (see the `pre-delivery-review` skill)
-   so the next search finds it.
+   so the next search finds it. If the change itself has real business
+   logic, branching, or cross-flow impact — as opposed to a
+   straightforward, mostly-linear edit — escalate to `flow-impact-mapping`
+   (or the `risk-analyst` subagent) for a per-flow criticality/impact map
+   before finalizing the plan; this checklist's single risk tier isn't
+   enough for that case.
