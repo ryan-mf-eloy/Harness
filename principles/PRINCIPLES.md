@@ -222,18 +222,23 @@ changes.
   sequence needs — drop the compression the moment it risks ambiguity,
   the same exception the skill itself already documents.
 
-  This governs conversational output tokens specifically — never the
-  content of anything written to disk. Documentation (READMEs, skill/
-  subagent files, ADRs, Vault notes, PR descriptions, commit messages),
-  memory (Claude Code's own auto-memory, `MEMORY.md`, anything under
-  `Vault/40-Memory/`), and this harness's own operational content
-  (`principles/PRINCIPLES.md`, `AGENTS.md`, skills, subagents, hooks,
-  templates) are never compressed — including never running the skill's
-  own `caveman-compress` command against any of them, even though
-  compressing memory-style files is one of its advertised features. These
-  are read by people and future sessions without today's conversational
-  context; a fragment that's unambiguous mid-conversation can become a
-  genuine misread months later, with no one left to ask what it meant.
+  This applies **only** to the live chat/conversational reply stream —
+  nothing else, ever. Never compressed, no exceptions: documentation
+  (READMEs, skill/subagent files, ADRs, Vault notes, PR descriptions,
+  commit messages), memory (Claude Code's own auto-memory, `MEMORY.md`,
+  anything under `Vault/40-Memory/`), this harness's own operational
+  content (`principles/PRINCIPLES.md`, `AGENTS.md`, skills, subagents,
+  hooks, templates), code/inline comments, comments posted to a
+  ticket/PR/task tracker, emails, and any other action visible outside
+  this conversation (a chat message to a third party, a calendar invite,
+  a comment on an external system) — including never running the skill's
+  own `caveman-compress` command against any of the above, even though
+  compressing memory-style files is one of its advertised features. Same
+  reasoning as "Internal vocabulary stays internal" below: these are read
+  by people and systems without today's conversational context, so a
+  fragment that's unambiguous mid-conversation can become a genuine
+  misread later, or just read as unprofessional to someone outside this
+  session, with no one left to ask what it meant.
 - **Internal vocabulary stays internal.** Harness-specific terms ("the
   Harness", a folder name like `RAG/` or `Vault/`, a specific skill or
   subagent name) and this machine's absolute file paths are operational
