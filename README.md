@@ -15,10 +15,10 @@ CLAUDE.md             thin Claude Code pointer: @AGENTS.md
 .cursorrules, .cursor/rules/agents.mdc   thin Cursor pointer: see AGENTS.md
 ONBOARDING.md         full procedure for onboarding a new project onto the harness
 principles/           PRINCIPLES.md — the actual rules content, provider-agnostic
-claude/               agents/ skills/ — Claude-Code-specific packaging, symlinked into ~/.claude/
-.cursor/agents/       Cursor-specific subagent translations, symlinked into ~/.cursor/agents/
-.codex/agents/        Codex-CLI-specific subagent translations (TOML), symlinked into ~/.codex/agents/
-.agents/skills        symlink to claude/skills — shared discovery path Cursor + Codex CLI both scan
+claude/               agents/ skills/ — Claude-Code-specific packaging, each entry mirrored via its own symlink into ~/.claude/agents/ and ~/.claude/skills/ (which stay real directories — see install.py)
+.cursor/agents/       Cursor-specific subagent translations, each mirrored into ~/.cursor/agents/
+.codex/agents/        Codex-CLI-specific subagent translations (TOML), each mirrored into ~/.codex/agents/
+.agents/skills        symlink to ~/.claude/skills — shared discovery path Cursor + Codex CLI both scan
 Vault/                Obsidian vault: memory + documentation
 RAG/                  immutable business/domain source of truth
 Secrets/              label manifest only, never values
@@ -35,15 +35,19 @@ templates/            AGENTS.md / CLAUDE.md / PR templates for onboarding a new 
 python3 Scripts/harness/install.py
 ```
 
-This creates the global symlinks (`~/.claude/agents`, `~/.claude/skills`,
-`~/.agents/skills`, `~/.cursor/agents`, `~/.codex/agents`,
-`~/.claude/CLAUDE.md`, `~/.codex/AGENTS.md`) and merges this harness's
-global hook entries into `~/.claude/settings.json`, `~/.cursor/hooks.json`,
-and `~/.codex/hooks.json` — without touching any unrelated content already
-in those files. Unlike a copy-paste `ln -s` snippet, it's idempotent: safe
-to run again after moving, recloning, or reorganizing this repo (it will
-refresh anything now pointing at a stale location) and safe to run
-repeatedly with no effect once everything is already correct. Run
+This ensures `~/.claude/agents`, `~/.claude/skills`, `~/.cursor/agents`,
+and `~/.codex/agents` are real directories (never a symlink straight into
+this repo — that lets any *other* tool install its own skills/agents
+there too, alongside the harness's own, without landing inside this
+repo's git tree), each populated with one symlink per harness-owned
+entry; sets up `~/.agents/skills` (aliased to `~/.claude/skills`),
+`~/.claude/CLAUDE.md`, and `~/.codex/AGENTS.md`; and merges this
+harness's global hook entries into `~/.claude/settings.json`,
+`~/.cursor/hooks.json`, and `~/.codex/hooks.json` — without touching any
+unrelated content already in those files. Idempotent: safe to run again
+after moving, recloning, or reorganizing this repo (it will refresh
+anything now pointing at a stale location) and safe to run repeatedly
+with no effect once everything is already correct. Run
 `python3 Scripts/harness/install.py --dry-run` first if you want to
 preview what it would change before it changes anything.
 

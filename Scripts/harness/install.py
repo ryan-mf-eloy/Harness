@@ -12,9 +12,10 @@ first and only acts on the actual gap between "what exists now" and
 
 Two independent jobs, both idempotent on their own:
 
-1. Create/refresh the global symlinks Claude Code, Cursor, and Codex CLI
-   discovery paths depend on (see SYMLINKS below — sourced verbatim from
-   README.md's setup block, not re-derived).
+1. Create/refresh the global directories and symlinks Claude Code, Cursor,
+   and Codex CLI discovery paths depend on (see DIRECTORY_MIRRORS,
+   ALIAS_SYMLINKS, FILE_SYMLINKS below — sourced verbatim from README.md's
+   setup block, not re-derived).
 2. Merge this harness's global hook entries into the three tools' global
    config files (~/.claude/settings.json, ~/.cursor/hooks.json,
    ~/.codex/hooks.json), updating only the harness-owned entries and
@@ -26,11 +27,26 @@ This script deliberately does NOT touch this repo's own project-scoped
 .claude/settings.json / .cursor/hooks.json / .codex/hooks.json — those
 already use ${CLAUDE_PROJECT_DIR}/${CURSOR_PROJECT_DIR} correctly (see
 Scripts/harness/hooks/README.md) and need no path-fixing at all.
+
+IMPORTANT, learned the hard way: ~/.claude/agents, ~/.claude/skills,
+~/.cursor/agents, and ~/.codex/agents are never made whole-directory
+symlinks straight into this harness repo. An earlier version of this
+script did exactly that, and the very first time a third-party tool
+installed something new into one of those directories (the community
+`caveman` skill, installed via its own official installer), it wrote its
+files transparently THROUGH the symlink, landing them inside this
+harness's own git-tracked claude/skills/ folder. DIRECTORY_MIRRORS below
+fixes this: each of those four stays (or becomes) a REAL directory, with
+one symlink per harness-owned entry inside it — so anything else another
+tool installs alongside sits there as ordinary, real, non-harness files,
+never inside this repo. See
+Vault/00-System/decisions/2026-07-06-directory-mirror-not-whole-symlink.md.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -44,20 +60,38 @@ ROOT = Path(__file__).resolve().parents[2]
 HOOKS_DIR = ROOT / "Scripts" / "harness" / "hooks"
 
 # ---------------------------------------------------------------------------
-# 1. Symlinks — sourced verbatim from README.md's "One-time setup" block.
-#    (target_path, source_path). If README.md's list ever changes, update
-#    it there first and mirror the change here — this list must never
-#    drift from that one.
+# 1. Directories, aliases, and file symlinks — sourced verbatim from
+#    README.md's "One-time setup" block. If that list ever changes, update
+#    it there first and mirror the change here — these must never drift
+#    from that one.
 # ---------------------------------------------------------------------------
 
 HOME = Path.home()
 
-SYMLINKS: list[tuple[Path, Path]] = [
+# Directories where this harness contributes some entries but OTHER tools
+# may also install their own entries alongside them (a skill marketplace,
+# a plugin manager, a manual install). Each of these stays a REAL
+# directory — never a symlink to the harness itself — with one symlink per
+# harness-owned entry created inside it. This is the fix for the bug
+# described in the module docstring above.
+DIRECTORY_MIRRORS: list[tuple[Path, Path]] = [
     (HOME / ".claude" / "agents", ROOT / "claude" / "agents"),
     (HOME / ".claude" / "skills", ROOT / "claude" / "skills"),
-    (HOME / ".agents" / "skills", ROOT / "claude" / "skills"),
     (HOME / ".cursor" / "agents", ROOT / ".cursor" / "agents"),
     (HOME / ".codex" / "agents", ROOT / ".codex" / "agents"),
+]
+
+# Symlinks whose SOURCE is one of the real (non-harness) directories above,
+# not the harness directly — safe as a whole-directory symlink, since
+# anything written through it lands in that already-real, already-shared
+# directory, never inside this repo's own git tree.
+ALIAS_SYMLINKS: list[tuple[Path, Path]] = [
+    (HOME / ".agents" / "skills", HOME / ".claude" / "skills"),
+]
+
+# Pure file symlinks — no "shared directory" risk, since a file can't
+# contain other unrelated content the way a directory can.
+FILE_SYMLINKS: list[tuple[Path, Path]] = [
     (HOME / ".claude" / "CLAUDE.md", ROOT / "principles" / "PRINCIPLES.md"),
     (HOME / ".codex" / "AGENTS.md", ROOT / "principles" / "PRINCIPLES.md"),
 ]
@@ -377,6 +411,114 @@ def reconcile_symlink(target: Path, source: Path, dry_run: bool) -> str:
     return f"CREATED {target} -> {source}"
 
 
+def git_tracked_top_level_names(root: Path, source: Path) -> set[str]:
+    """Names of top-level entries under `source` that are actually tracked
+    in this harness's own git history (or currently staged) -- the real
+    source of truth for "does the harness own this."
+
+    A plain directory listing can't tell tracked harness content apart
+    from something a third-party installer already wrote into the same
+    path: confirmed to happen for real (the `caveman` skill's installer
+    wrote its own directories straight into claude/skills/ through the
+    old whole-directory symlink, and once there, `caveman` and
+    `branch-worktree` look identical to a directory listing -- only git
+    knows which one this repo actually committed).
+    """
+    try:
+        relative = source.relative_to(root)
+    except ValueError:
+        return set()
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "ls-files", "--", str(relative)],
+            capture_output=True, text=True, check=True,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return set()
+    prefix = str(relative) + "/"
+    names: set[str] = set()
+    for line in result.stdout.splitlines():
+        if line.startswith(prefix):
+            names.add(line[len(prefix):].split("/", 1)[0])
+    return names
+
+
+def reconcile_directory_mirror(real_parent: Path, harness_source: Path, dry_run: bool) -> list[str]:
+    """Ensure real_parent is a REAL directory (never a symlink itself),
+    containing one symlink per entry in harness_source, without disturbing
+    any other (non-harness) entries already inside real_parent.
+
+    Migration case: if real_parent is currently a whole-directory symlink
+    (the old, buggy design), any entries inside its resolved target that
+    AREN'T one of harness_source's own entries are moved out into the new
+    real directory before the symlink is replaced — this is exactly what
+    protects a third-party tool's files (e.g. a skill installed alongside
+    this harness's own) from being silently discarded during migration.
+    """
+    report: list[str] = []
+    # Source of truth is git tracking, NOT a directory listing -- once a
+    # third-party entry has already landed inside harness_source (the
+    # caveman incident), a directory listing can no longer tell it apart
+    # from the harness's own real content. Only git knows which is which.
+    harness_names = git_tracked_top_level_names(ROOT, harness_source)
+
+    if real_parent.is_symlink():
+        old_target = real_parent.resolve()
+        if dry_run:
+            report.append(
+                f"WOULD MIGRATE {real_parent}: currently a whole-directory "
+                f"symlink -> {old_target} -- would convert to a real "
+                f"directory with one symlink per harness entry, moving any "
+                f"non-harness entries found inside {old_target} into it."
+            )
+            return report
+        foreign_entries = []
+        if old_target.exists():
+            for entry in old_target.iterdir():
+                if entry.name not in harness_names:
+                    foreign_entries.append(entry)
+        real_parent.unlink()
+        real_parent.mkdir(parents=True, exist_ok=True)
+        for entry in foreign_entries:
+            entry.rename(real_parent / entry.name)
+        if foreign_entries:
+            names = ", ".join(e.name for e in foreign_entries)
+            report.append(
+                f"MIGRATED {real_parent}: was a whole-directory symlink -> "
+                f"{old_target}; converted to a real directory, preserved "
+                f"{len(foreign_entries)} non-harness entr"
+                f"{'y' if len(foreign_entries) == 1 else 'ies'} moved out of "
+                f"the harness repo and into it: {names}"
+            )
+        else:
+            report.append(
+                f"MIGRATED {real_parent}: was a whole-directory symlink -> "
+                f"{old_target}; converted to a real directory (no "
+                f"non-harness entries found to preserve)"
+            )
+    elif not real_parent.exists():
+        if dry_run:
+            report.append(f"WOULD CREATE {real_parent} (real directory)")
+            return report
+        real_parent.mkdir(parents=True, exist_ok=True)
+        report.append(f"CREATED {real_parent} (real directory)")
+    elif not real_parent.is_dir():
+        report.append(
+            f"SKIPPED {real_parent}: exists as a real file, not a "
+            f"directory — not touching it automatically. Resolve by hand."
+        )
+        return report
+    else:
+        report.append(f"OK      {real_parent} (already a real directory)")
+
+    for name in sorted(harness_names):
+        entry = harness_source / name
+        if entry.exists():
+            report.append("  " + reconcile_symlink(real_parent / name, entry, dry_run))
+
+    return report
+
+
 # ---------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------
@@ -390,9 +532,21 @@ def main() -> int:
     args = parser.parse_args()
 
     print(f"Harness root: {ROOT}")
-    print(f"{'(dry run) ' if args.dry_run else ''}Reconciling symlinks...\n")
+    print(f"{'(dry run) ' if args.dry_run else ''}Reconciling directory mirrors...\n")
 
-    for target, source in SYMLINKS:
+    # Order matters: directory mirrors first (so ~/.claude/skills is a real
+    # directory before anything tries to alias it), then aliases, then
+    # plain file symlinks.
+    for real_parent, harness_source in DIRECTORY_MIRRORS:
+        for line in reconcile_directory_mirror(real_parent, harness_source, args.dry_run):
+            print("  " + line)
+
+    print(f"\n{'(dry run) ' if args.dry_run else ''}Reconciling alias symlinks...\n")
+    for target, source in ALIAS_SYMLINKS:
+        print("  " + reconcile_symlink(target, source, args.dry_run))
+
+    print(f"\n{'(dry run) ' if args.dry_run else ''}Reconciling file symlinks...\n")
+    for target, source in FILE_SYMLINKS:
         print("  " + reconcile_symlink(target, source, args.dry_run))
 
     print(f"\n{'(dry run) ' if args.dry_run else ''}Merging global hook config...\n")
